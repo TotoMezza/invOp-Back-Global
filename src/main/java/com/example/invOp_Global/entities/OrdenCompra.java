@@ -26,11 +26,10 @@ public class OrdenCompra extends EntidadBase{
     @NotNull
     private  double totalOrdenCompra;
 
-
     @NotNull
     @ManyToOne()
-    @JoinColumn(name = "id_proveedor")
-    private Proveedor proveedor;
+    @JoinColumn(name = "id_proveedor_Articulo")
+    private ProveedorArticulo proveedorArticulo;
 
     @NotNull
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

@@ -31,6 +31,4 @@ public class Demanda extends EntidadBase{
     @Column(name = "fecha_hasta")
     private Date fechaHasta;
 
-
-
 }

@@ -27,16 +27,6 @@ public class ProveedorArticulo extends EntidadBase{
     private Double costoPedidoArticulo;
 
     @NotNull
-    @Column(name = "costo_almacenamiento")
-    private Double costoAlmacenamiento;
-
-    @Column(name = "punto_pedido")
-    private Integer puntoPedido;
-
-    @Column(name = "cgi")
-    private Double cgi;
-
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "articulo_id")
     private Articulo articulo;

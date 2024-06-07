@@ -1,5 +1,6 @@
 package com.example.invOp_Global.entities;
 
+import com.example.invOp_Global.enums.ModeloInventario;
 import jakarta.persistence.*;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -27,6 +28,10 @@ public class Articulo extends EntidadBase {
     private Double precio;
 
     @NotNull
+    @Column( name = "modelo_Inventario")
+    private ModeloInventario modeloInventario;
+
+    @NotNull
     @Column(name = "stock-Actual")
     private int stockActual;
 
@@ -38,11 +43,14 @@ public class Articulo extends EntidadBase {
     @Column(name = "stock_Seguridad")
     private Integer stockSeguridad;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @NotNull
-    @JoinColumn(name = "id_Prediccion")
-    @Builder.Default
-    private List<Prediccion> predicciones = new ArrayList<>();
+    @Column(name = "costo_almacenamiento")
+    private Double costoAlmacenamiento;
 
+    @NotNull
+    @Column(name = "cgi")
+    private Double cgi;
 
+    @Column(name = "punto_pedido")
+    private Integer puntoPedido;
 }

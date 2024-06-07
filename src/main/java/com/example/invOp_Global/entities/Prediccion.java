@@ -1,10 +1,13 @@
 package com.example.invOp_Global.entities;
 
+import com.example.invOp_Global.enums.TipoPrediccion;
 import jakarta.persistence.*;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "prediccion")
@@ -23,5 +26,16 @@ public class Prediccion extends EntidadBase{
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_Articulo")
     private Articulo articulo;
+
+    @Column(name = "error_Medicion")
+    private float errorMedicion;
+
+    @NotNull
+    @Column(name = "tipo_prediccion")
+    private TipoPrediccion tipoPrediccion;
+
+    @OneToMany
+    @JoinColumn(name = "id_prediccion_demanda")
+    private List<PrediccionDemanda> prediccionDemanda  = new ArrayList<>();
 
 }
