@@ -1,4 +1,6 @@
 package com.example.invOp_Global.service;
 
-public interface PrediccionDemandaService {
+import com.example.invOp_Global.entities.PrediccionDemanda;
+
+public interface PrediccionDemandaService extends BaseService<PrediccionDemanda,Long>{
 }

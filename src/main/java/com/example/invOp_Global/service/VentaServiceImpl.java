@@ -31,4 +31,6 @@ public class VentaServiceImpl extends BaseServiceImpl<Venta, Long> implements Ve
             throw new Exception(e.getMessage());
         }
     }
+
+
 }

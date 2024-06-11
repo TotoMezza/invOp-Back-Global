@@ -1,4 +1,6 @@
 package com.example.invOp_Global.repository;
 
-public interface DetalleOCRepository {
+import com.example.invOp_Global.entities.DetalleOrdenCompra;
+
+public interface DetalleOCRepository extends BaseRepository<DetalleOrdenCompra,Long>{
 }
