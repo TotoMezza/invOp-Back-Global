@@ -1,4 +1,6 @@
 package com.example.invOp_Global.repository;
 
-public interface ProveedorRepository {
+import com.example.invOp_Global.entities.Proveedor;
+
+public interface ProveedorRepository extends BaseRepository<Proveedor,Long>{
 }

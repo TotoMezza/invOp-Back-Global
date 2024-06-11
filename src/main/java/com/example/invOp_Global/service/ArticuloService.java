@@ -1,4 +1,6 @@
 package com.example.invOp_Global.service;
 
-public interface ArticuloService {
+import com.example.invOp_Global.entities.Articulo;
+
+public interface ArticuloService extends BaseService<Articulo,Long>{
 }

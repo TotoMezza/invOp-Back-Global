@@ -1,4 +1,6 @@
 package com.example.invOp_Global.service;
 
-public interface ProveedorService {
+import com.example.invOp_Global.entities.Proveedor;
+
+public interface ProveedorService extends BaseService<Proveedor,Long>{
 }

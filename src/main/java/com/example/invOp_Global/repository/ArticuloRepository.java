@@ -1,4 +1,6 @@
 package com.example.invOp_Global.repository;
 
-public interface ArticuloRepository {
+import com.example.invOp_Global.entities.Articulo;
+
+public interface ArticuloRepository extends BaseRepository<Articulo,Long>{
 }

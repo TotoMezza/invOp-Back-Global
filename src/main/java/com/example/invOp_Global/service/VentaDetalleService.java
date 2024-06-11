@@ -1,4 +1,6 @@
 package com.example.invOp_Global.service;
 
-public interface VentaDetalleService {
+import com.example.invOp_Global.entities.VentaDetalle;
+
+public interface VentaDetalleService extends BaseService<VentaDetalle,Long>{
 }
