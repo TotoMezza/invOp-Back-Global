@@ -26,6 +26,8 @@ public class ProveedorArticulo extends EntidadBase{
     @Column(name = "costo_pedido")
     private Double costoPedidoArticulo;
 
+   //cost<lm<cenzmient
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "articulo_id")

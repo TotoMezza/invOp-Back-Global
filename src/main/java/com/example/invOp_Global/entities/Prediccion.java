@@ -36,6 +36,7 @@ public class Prediccion extends EntidadBase{
 
     @OneToMany
     @JoinColumn(name = "id_prediccion_demanda")
+    @Builder.Default
     private List<PrediccionDemanda> prediccionDemanda  = new ArrayList<>();
 
 }
