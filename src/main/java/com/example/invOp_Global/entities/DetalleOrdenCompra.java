@@ -14,7 +14,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 public class DetalleOrdenCompra extends EntidadBase{
     @NotNull
-    private  Integer cantidadOCD;
+    private Integer cantidadOCD;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_Articulo")

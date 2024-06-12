@@ -16,15 +16,36 @@ public class ProveedorArticulo extends EntidadBase{
 
     @NotNull
     @Column(name = "tiempo_demora")
-    private Double tiempoDemora;
+    private int tiempoDemora;
+
+    @NotNull
+    @Column(name = "costo_almacenamiento")
+    private Double costoAlmacenamiento;
+
+    public Double getCostoAlmacenamiento() {
+        return costoAlmacenamiento;
+    }
+
+    public int getTiempoDemora() {
+        return tiempoDemora;
+    }
 
     @NotNull
     @Column(name = "precio_articulo")
-    private Double precioArticulo;
+    private Double precioArticulo; //seria lo mismo que precio de compra
+
+    public Double getPrecioArticulo() {
+        return precioArticulo;
+    }
 
     @NotNull
     @Column(name = "costo_pedido")
     private Double costoPedidoArticulo;
+
+
+    public Double getCostoPedidoArticulo() {
+        return costoPedidoArticulo;
+    }
 
     @NotNull
     @ManyToOne

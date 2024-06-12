@@ -27,4 +27,8 @@ public class Proveedor extends EntidadBase{
     @Builder.Default
     private List<ProveedorArticulo> proveedorArticuloList = new ArrayList<>();
 
+    public void AgregarProveedorArticulo(ProveedorArticulo pa){
+        proveedorArticuloList.add(pa);
+    }
+
 }

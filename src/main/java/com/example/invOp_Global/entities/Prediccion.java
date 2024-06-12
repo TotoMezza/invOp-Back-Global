@@ -32,10 +32,12 @@ public class Prediccion extends EntidadBase{
 
     @NotNull
     @Column(name = "tipo_prediccion")
+    @Enumerated(EnumType.STRING)
     private TipoPrediccion tipoPrediccion;
 
     @OneToMany
     @JoinColumn(name = "id_prediccion_demanda")
+    @Builder.Default
     private List<PrediccionDemanda> prediccionDemanda  = new ArrayList<>();
 
 }

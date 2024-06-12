@@ -18,6 +18,7 @@ import java.util.List;
 @Builder
 public class OrdenCompra extends EntidadBase{
     @NotNull
+    @Enumerated(EnumType.STRING)
     private EstadoOrdenCompra estadoOrdenCompra;
 
     @NotNull

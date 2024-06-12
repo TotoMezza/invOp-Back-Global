@@ -23,16 +23,12 @@ public class Venta extends EntidadBase {
     @NotNull
     private Date fechaVenta;
 
-    private boolean calculoTotal; //flag para que solo se ejecute una vez el cálculo del total
+    private boolean calculoTotal=false; //flag para que solo se ejecute una vez el cálculo del total
 
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "id_demanda")
-    private Demanda demanda;
-
-    @NotNull
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Builder.Default
+    @JoinColumn(name = "id_Venta")
     private List<VentaDetalle> ventaDetalles = new ArrayList<>();
 
     public void AgregarDetalleVenta(VentaDetalle vd) {
@@ -42,13 +38,20 @@ public class Venta extends EntidadBase {
     public void CalcularTotalVenta() {
 
         if (calculoTotal) {
-            throw new IllegalStateException("El método para calcular el total de la venta ya fue ejecutado, su resultado fue: $" + this.totalVenta);
+            System.out.println("El método para calcular el total de la venta ya fue ejecutado, su resultado fue: $" + this.totalVenta);
+            return; // Salir del método si ya se calculó
         }
+
         this.totalVenta = 0.0;
         for (VentaDetalle ventaDetalle : ventaDetalles) {
             totalVenta += ventaDetalle.getSubtotal();
         }
-        calculoTotal = true; //marco como true para que cuando se vuelva ejecutar pase a else y no se quede en un bucle
-        System.out.println("El total de la venta es: $"+ totalVenta);
+        calculoTotal = true; // marcar como false para indicar que ya se calculó una vez
+        System.out.println("El total de la venta es: $" + totalVenta+""+calculoTotal);
+    }
+
+
+    public Double getTotalVenta() {
+        return totalVenta;
     }
 }
