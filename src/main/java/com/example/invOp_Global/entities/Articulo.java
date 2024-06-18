@@ -41,19 +41,19 @@ public class Articulo extends EntidadBase {
     @Column(name="periodoPedido")
     private Integer periodoPedido;
 
-    @NotNull
+
     @Column(name = "stock-Actual")
     private int stockActual;
 
-    @NotNull
-    @Column(name = "lote_Optimo")
-    private int loteOptimo;
 
-    @NotNull
+    @Column(name = "lote_Optimo")
+    private Integer loteOptimo;
+
+
     @Column(name = "stock_Seguridad")
     private int stockSeguridad;
 
-    @NotNull
+
     @Column(name = "cgi")
     private Double cgi;
 
@@ -64,19 +64,28 @@ public class Articulo extends EntidadBase {
         double auxCp=pa.getCostoPedidoArticulo();
         double auxD=d.getTotalDemanda();
 
-        stockSeguridad=40; //no se la formula asi q mientras ponemos este
+
         stockActual=50; //idem anterior
         if (modeloInventario == LOTE_FIJO){
             int auxTD=pa.getTiempoDemora();
-            puntoPedido= (int) Math.round(auxTD*auxD);
+            stockSeguridad= (int) Math.round(1.65*Math.sqrt(auxTD));
+            puntoPedido= stockSeguridad+(int) Math.round(auxTD*auxD);
             periodoPedido =null;
             loteOptimo = (int) Math.round(Math.sqrt(2 * auxD * (auxCp / pa.getCostoAlmacenamiento())));
         } else{
             puntoPedido= null;
-            //Formula de lote optimo (cantidad) para tiempo fijo tiene desviación estándar
+            loteOptimo=null;
+            stockSeguridad=(int) Math.round(1.65*Math.sqrt(periodoPedido+pa.getTiempoDemora()));
+            //periodoPedido es con un controller supongo
+
         }
 
         cgi=pa.getPrecioArticulo()*d.getTotalDemanda()+pa.getCostoAlmacenamiento()*loteOptimo/2+pa.getCostoPedidoArticulo()*d.getTotalDemanda()/loteOptimo;
     }
+
+    public void setPeriodoPedido(Integer periodoPedido) {
+        this.periodoPedido = periodoPedido;
+    }
+
 
 }
