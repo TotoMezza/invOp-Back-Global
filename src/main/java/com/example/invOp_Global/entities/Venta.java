@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "venta")
+@Table(name = "ventas")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -50,8 +50,4 @@ public class Venta extends EntidadBase {
         System.out.println("El total de la venta es: $" + totalVenta+""+calculoTotal);
     }
 
-
-    public Double getTotalVenta() {
-        return totalVenta;
-    }
 }
