@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface OrdenCompraService extends BaseService<OrdenCompra,Long>{
     public List<OrdenCompra> findOrdenCompraByEstado(String filtroEstado) throws Exception;
+
+    @Transactional
+    List<OrdenCompra> findOrdenCompraByEstadoAndArticulo(String estado, Long articulo_id);
 }

@@ -15,4 +15,6 @@ public class DetalleOCServiceImpl extends BaseServiceImpl<DetalleOrdenCompra,Lon
     public DetalleOCServiceImpl(BaseRepository<DetalleOrdenCompra, Long> baseRepository) {
         super(baseRepository);
     }
+
+
 }

@@ -22,13 +22,4 @@ public class Proveedor extends EntidadBase{
     @Column(name = "nombre_proveedor")
     private String nombreProveedor;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name="id_proveedor")
-    @Builder.Default
-    private List<ProveedorArticulo> proveedorArticuloList = new ArrayList<>();
-
-    public void AgregarProveedorArticulo(ProveedorArticulo pa){
-        proveedorArticuloList.add(pa);
-    }
-
 }

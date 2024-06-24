@@ -3,7 +3,6 @@ package com.example.invOp_Global.service;
 import com.example.invOp_Global.entities.PrediccionDemanda;
 import com.example.invOp_Global.repository.BaseRepository;
 import com.example.invOp_Global.repository.PrediccionDemandaRepository;
-import com.example.invOp_Global.repository.PrediccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

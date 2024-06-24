@@ -12,10 +12,13 @@ import org.antlr.v4.runtime.misc.NotNull;
 @Setter
 @Builder
 public class VentaDetalle extends EntidadBase {
+
     @NotNull
+    @Column(name = "cantidad_venta")
     private int cantidadVenta;
 
     @NotNull
+    @Column(name= "subtotal")
     private Double subtotal;
 
     @NotNull
@@ -23,18 +26,9 @@ public class VentaDetalle extends EntidadBase {
     @JoinColumn(name = "id_Articulo")
     private Articulo articulo;
 
-    public void setArticulo(Articulo articulo) {
+    public VentaDetalle(Articulo articulo, Integer cantidadVenta) {
         this.articulo = articulo;
-    }
-
-    public void setCantidadVenta(int cantidadVenta) {
         this.cantidadVenta = cantidadVenta;
     }
 
-    public void setSubtotal() {
-        this.subtotal = this.cantidadVenta*articulo.getPrecio();
-    }
-    public Double getSubtotal() {
-        return subtotal;
-    }
 }

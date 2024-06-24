@@ -11,4 +11,7 @@ public interface ProveedorArticuloService extends BaseService<ProveedorArticulo,
 
     @Transactional
     public List<ProveedorArticulo> findArticulosByProveedor(Long filtroProveedor) throws Exception;
+
+    @Transactional
+    public ProveedorArticulo findProveedorArticuloByArticuloAndProveedor(Long proveedor_id, Long articulo_id);
 }

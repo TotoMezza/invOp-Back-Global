@@ -1,5 +1,7 @@
 package com.example.invOp_Global.service;
 
+import com.example.invOp_Global.entities.Articulo;
+import com.example.invOp_Global.entities.DetalleOrdenCompra;
 import com.example.invOp_Global.entities.OrdenCompra;
 import com.example.invOp_Global.repository.BaseRepository;
 import com.example.invOp_Global.repository.OrdenCompraRepository;
@@ -7,6 +9,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,13 +25,25 @@ public class OrdenCompraServiceImpl extends BaseServiceImpl<OrdenCompra,Long> im
     }
     @Override
     @Transactional
-    public List<OrdenCompra> findOrdenCompraByEstado(String filtroEstado) throws Exception{
-        try {
-            List<OrdenCompra> buscarOrdenes = ordenCompraRepository.findOrdenCompraByEstado(filtroEstado);
-            return buscarOrdenes;
-        } catch (Exception e){
-            throw new Exception(e.getMessage());
-        }
+    public List<OrdenCompra> findOrdenCompraByEstado(String estado){
+            List<OrdenCompra> buscarOrden = ordenCompraRepository.findOrdenCompraByEstado(estado);
+            return buscarOrden;
     }
+
+    @Override
+    @Transactional
+    public List<OrdenCompra> findOrdenCompraByEstadoAndArticulo(String estado, Long articulo_id){
+        List<OrdenCompra> buscarOrden = ordenCompraRepository.findOrdenCompraByEstadoAndArticulo(estado,articulo_id);
+        return buscarOrden;
+    }
+
+  /*  public OrdenCompra crearOrdenCompra(Articulo articulo){
+        OrdenCompra ordenCompra = new OrdenCompra();
+
+        ordenCompra.setFechaOrdenCompra(LocalDate.now());
+        ordenCompra.setProveedor(articulo.getProveedorPred());
+
+
+    }*/
 }
 

@@ -14,19 +14,23 @@ public interface ProveedorArticuloRepository extends BaseRepository<ProveedorArt
     @Query(
             value = "SELECT * " +
                     "FROM proveedor_articulo pa " +
-                    "WHERE pa.articulo_id = :filtroArticulo",
+                    "WHERE pa.id_articulo = :articulo_id",
             nativeQuery = true
     )
-    List<ProveedorArticulo> findProveedoresByArticulo(@PathVariable("filtroArticulo") Long filtroArticulo);
+    List<ProveedorArticulo> findProveedoresByArticulo(@PathVariable("articulo_id") Long articulo_id);
 
 
     @Query(
             value = "SELECT DISTINCT a.nombre_articulo " +
                     "FROM articulos a " +
                     "JOIN proveedor_articulo pa ON pa.articulo_id = a.id " +
-                    "WHERE pa.id_proveedor = :filtroProveedor",
+                    "WHERE pa.id_proveedor = : proveedor_id",
             nativeQuery = true
     )
-    List<ProveedorArticulo> findArticulosByProveedor(@Param("filtroProveedor") Long filtroProveedor);
+    List<ProveedorArticulo> findArticulosByProveedor(@Param("proveedor_id") Long proveedor_id);
 
+    @Query(value = "SELECT pa FROM ProveedorArticulo as pa " +
+                    "WHERE pa.id_proveedor = :proveedor_id AND pa.id_articulo = :articulo_id;", nativeQuery = true
+    )
+    ProveedorArticulo findProveedorArticuloByProveedorAndArticulo(@Param(value = "proveedor_id") Long proveedor_id, @Param(value = "articulo_id") Long articulo_id);
 }

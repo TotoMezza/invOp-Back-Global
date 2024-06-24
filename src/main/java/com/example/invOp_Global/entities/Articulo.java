@@ -18,74 +18,56 @@ import static com.example.invOp_Global.enums.ModeloInventario.LOTE_FIJO;
 public class Articulo extends EntidadBase {
 
     @NotNull
-    @Column(name = "nombre-Articulo")
+    @Column(name = "nombre_articulo")
     private String nombre;
 
     @NotNull
-    @Column(name = "precio-Articulo")
+    @Column(name = "precio_articulo")
     private Double precio;
 
-    public void setPrecio(Double precio) {
-        this.precio = precio;
-    }
+    @Column(name = "costo_almacenamiento")
+    private Double costoAlmacenamiento;
 
-    public Double getPrecio() {
-        return precio;
-    }
+    @Column(name = "costo_pedido")
+    private Double costoPedido;
 
     @NotNull
-    @Column( name = "modelo_Inventario")
-    @Enumerated(EnumType.STRING)
-    private ModeloInventario modeloInventario;
-
-    @Column(name="periodoPedido")
-    private Integer periodoPedido;
-
-
-    @Column(name = "stock-Actual")
+    @Column(name = "stock_actual")
     private int stockActual;
 
-
-    @Column(name = "lote_Optimo")
-    private Integer loteOptimo;
-
-
-    @Column(name = "stock_Seguridad")
+    @Column(name = "stock_seguridad")
     private int stockSeguridad;
-
 
     @Column(name = "cgi")
     private Double cgi;
 
+    @Column(name = "demanda_anual")
+    private Integer demandaAnual;
+
+    @NotNull
+    @Column( name = "modelo_inventario")
+    @Enumerated(EnumType.STRING)
+    private ModeloInventario modeloInventario;
+
+    @Column(name = "lote_optimo")
+    private Integer loteOptimo;
+
     @Column(name = "punto_pedido")
     private Integer puntoPedido;
 
-    public void calcularValores(Demanda d, ProveedorArticulo pa){
-        double auxCp=pa.getCostoPedidoArticulo();
-        double auxD=d.getTotalDemanda();
+    @Column(name = "cantidad_maxima")
+    private Integer cantidadMaxima;
+
+    @Column(name = "cantidad_a_pedir")
+    private Integer cantidadAPedir;
 
 
-        stockActual=50; //idem anterior
-        if (modeloInventario == LOTE_FIJO){
-            int auxTD=pa.getTiempoDemora();
-            stockSeguridad= (int) Math.round(1.65*Math.sqrt(auxTD));
-            puntoPedido= stockSeguridad+(int) Math.round(auxTD*auxD);
-            periodoPedido =null;
-            loteOptimo = (int) Math.round(Math.sqrt(2 * auxD * (auxCp / pa.getCostoAlmacenamiento())));
-        } else{
-            puntoPedido= null;
-            loteOptimo=null;
-            stockSeguridad=(int) Math.round(1.65*Math.sqrt(periodoPedido+pa.getTiempoDemora()));
-            //periodoPedido es con un controller supongo
+    @Column(name = "tiempo_revision")
+    private Double tiempoRevision;
 
-        }
-
-        cgi=pa.getPrecioArticulo()*d.getTotalDemanda()+pa.getCostoAlmacenamiento()*loteOptimo/2+pa.getCostoPedidoArticulo()*d.getTotalDemanda()/loteOptimo;
-    }
-
-    public void setPeriodoPedido(Integer periodoPedido) {
-        this.periodoPedido = periodoPedido;
-    }
+    @ManyToOne()
+    @JoinColumn(name = "proveedor_predeterminado")
+    private Proveedor proveedorPred;
 
 
 }

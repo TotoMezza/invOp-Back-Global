@@ -21,23 +21,21 @@ public class ProveedorArticuloServiceImpl extends BaseServiceImpl<ProveedorArtic
 
     @Override
     @Transactional
-    public List<ProveedorArticulo> findProveedoresByArticulo(Long filtroArticulo) throws Exception{
-        try {
-            return proveedorArticuloRepository.findProveedoresByArticulo(filtroArticulo);
-        } catch (Exception e){
-            throw new Exception(e.getMessage());
-        }
+    public List<ProveedorArticulo> findProveedoresByArticulo(Long articulo_id) {
+            return proveedorArticuloRepository.findProveedoresByArticulo(articulo_id);
     }
 
     @Override
     @Transactional
-    public List<ProveedorArticulo> findArticulosByProveedor(Long filtroProveedor) throws Exception {
-        try {
-            List<ProveedorArticulo> buscarArticulos = proveedorArticuloRepository.findArticulosByProveedor(filtroProveedor);
+    public List<ProveedorArticulo> findArticulosByProveedor(Long proveedor_id) {
+            List<ProveedorArticulo> buscarArticulos = proveedorArticuloRepository.findArticulosByProveedor(proveedor_id);
             return buscarArticulos;
-        } catch (Exception e){
-            throw new Exception(e.getMessage());
-        }
+    }
+
+    @Override
+    @Transactional
+    public ProveedorArticulo findProveedorArticuloByArticuloAndProveedor(Long proveedor_id, Long articulo_id){
+        return proveedorArticuloRepository.findProveedorArticuloByProveedorAndArticulo(proveedor_id,articulo_id);
     }
 
 }
