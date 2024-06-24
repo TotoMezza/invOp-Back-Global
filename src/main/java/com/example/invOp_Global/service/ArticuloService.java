@@ -15,6 +15,8 @@ public interface ArticuloService extends BaseService<Articulo,Long>{
 
     List<Articulo> listadoFaltantes();
 
+    List<Articulo> listadoAReponer();
+
     int calcularStockSeguridad(Long articuloId);
 
     void calculosLoteFijo(Long articuloId) throws Exception;

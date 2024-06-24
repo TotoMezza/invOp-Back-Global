@@ -2,6 +2,7 @@ package com.example.invOp_Global.service;
 
 import com.example.invOp_Global.dtos.DetalleVentaDto;
 import com.example.invOp_Global.entities.Articulo;
+import com.example.invOp_Global.entities.OrdenCompra;
 import com.example.invOp_Global.entities.Venta;
 import com.example.invOp_Global.entities.VentaDetalle;
 import com.example.invOp_Global.repository.ArticuloRepository;
@@ -22,6 +23,8 @@ public class VentaServiceImpl extends BaseServiceImpl<Venta, Long> implements Ve
     private ArticuloRepository articuloRepository;
     @Autowired
     private ArticuloService articuloService;
+    @Autowired
+    private OrdenCompraService ordenCompraService;
 
 
     public VentaServiceImpl(BaseRepository<Venta, Long> baseRepository, VentaRepository ventaRepository, ArticuloService articuloService){
@@ -29,6 +32,7 @@ public class VentaServiceImpl extends BaseServiceImpl<Venta, Long> implements Ve
         this.ventaRepository = ventaRepository;
         this.articuloRepository = articuloRepository;
         this.articuloService = articuloService;
+        this.ordenCompraService = ordenCompraService;
     }
     @Override
     public List<Venta> findVentasByFechas(LocalDate fechaDesde, LocalDate fechaHasta) throws Exception {
@@ -46,7 +50,7 @@ public class VentaServiceImpl extends BaseServiceImpl<Venta, Long> implements Ve
         nuevaVenta.setFechaVenta(LocalDate.now());
         for (DetalleVentaDto detalleVenta : detalleVentaDto){
                 Articulo articulo = articuloRepository.findById(detalleVenta.getArticulo_id()).orElseThrow();
-                if(articulo.getStockActual() <= detalleVenta.getCantidad()){
+                if(articulo.getStockActual() < detalleVenta.getCantidad()){
                     throw new Exception("El stock del articulo" + articulo.getNombre() + "no es suficiente para realizar la venta");
                 }
             }
@@ -62,8 +66,8 @@ public class VentaServiceImpl extends BaseServiceImpl<Venta, Long> implements Ve
 
             articuloService.disminuirStock(articulo, detalleVenta.getCantidad());
 
-            if (articulo.getStockActual() <= articulo.getStockSeguridad()){
-
+            if (articulo.getStockActual() <= articulo.getPuntoPedido()){
+                OrdenCompra ordenCompra = ordenCompraService.crearOrdenCompra(articulo);
             }
 
         }

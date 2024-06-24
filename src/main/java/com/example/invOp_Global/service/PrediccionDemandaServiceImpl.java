@@ -9,9 +9,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDemanda,Long> implements PrediccionDemandaService{
 
+
+    @Autowired
+    private DemandaService demandaService;
+
     @Autowired
     private PrediccionDemandaRepository prediccionDemandaRepository;
-    public PrediccionDemandaServiceImpl(BaseRepository<PrediccionDemanda, Long> baseRepository) {
+
+    @Autowired
+    private ArticuloService articuloService;
+
+
+    public PrediccionDemandaServiceImpl(BaseRepository<PrediccionDemanda, Long> baseRepository, PrediccionDemandaRepository prediccionDemandaRepository) {
         super(baseRepository);
     }
 }

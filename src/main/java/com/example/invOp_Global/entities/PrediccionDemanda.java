@@ -33,14 +33,6 @@ public class PrediccionDemanda extends EntidadBase{
     @JoinColumn(name ="id_articulo")
     private Articulo articulo;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name ="predicciones_demandas",
-            joinColumns = @JoinColumn(name = "id_prediccion_demanda"),
-            inverseJoinColumns = @JoinColumn(name = "id_demanda")
-    )
-    private List<Demanda> prediccionesDemanda;
-
     @Column(name = "error_medido")
     private Double errorMedido;
 }

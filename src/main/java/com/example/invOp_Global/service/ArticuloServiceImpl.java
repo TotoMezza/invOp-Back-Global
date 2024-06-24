@@ -88,6 +88,18 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
     }
 
     @Override
+    public List<Articulo> listadoAReponer(){
+        List<Articulo> articulos = articuloRepository.findAll();
+        List<Articulo> articulosAReponer = new ArrayList<>();
+        for (Articulo articulo : articulos){
+            if (articulo.getStockActual() <= articulo.getPuntoPedido()){
+                articulosAReponer.add(articulo);
+            }
+        }
+        return articulosAReponer;
+    }
+
+    @Override
     public int calcularStockSeguridad(Long articuloId){
         Articulo articulo = findById(articuloId);
         double valorZ = 1.64 ;
