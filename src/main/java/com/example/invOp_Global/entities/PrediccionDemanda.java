@@ -37,5 +37,6 @@ public class PrediccionDemanda extends EntidadBase{
 
     @NotNull
     @Column(name = "metodo_prediccion")
+    @Enumerated(EnumType.STRING)
     private MetodoPrediccion metodoPrediccion;
 }
