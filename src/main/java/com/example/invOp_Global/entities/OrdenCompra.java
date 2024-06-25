@@ -23,11 +23,10 @@ public class OrdenCompra extends EntidadBase{
     @Column(name = "fecha_oc")
     private LocalDate fechaOrdenCompra;
 
-    @NotNull
     @Column(name = "total_oc")
     private  double totalOrdenCompra;
 
-    @NotNull
+
     @Column(name = "estado_oc")
     @Enumerated(EnumType.STRING)
     private EstadoOrdenCompra estadoOrdenCompra;

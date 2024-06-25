@@ -18,7 +18,7 @@ import java.util.List;
 @Builder
 public class Venta extends EntidadBase {
 
-    @NotNull
+
     @Column(name = "total_venta")
     private Double totalVenta;
 

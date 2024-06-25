@@ -30,4 +30,8 @@ public interface ArticuloService extends BaseService<Articulo,Long>{
     void modificarIntervaloFijo(Long articuloId) throws Exception;
 
     void modificarLoteFijo(Long articuloId) throws Exception;
+
+    void modificarModeloInventario(Long articuloId) throws Exception;
+
+    void modificarValoresProveedor(Long proveedorId, Long articuloId) throws Exception;
 }

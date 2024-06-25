@@ -17,7 +17,7 @@ public class VentaDetalle extends EntidadBase {
     @Column(name = "cantidad_venta")
     private int cantidadVenta;
 
-    @NotNull
+
     @Column(name= "subtotal")
     private Double subtotal;
 

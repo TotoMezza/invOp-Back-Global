@@ -16,6 +16,7 @@ public class ParametrosPrediccionDTO {
     private Integer anioPrediccion;
     private MetodoPrediccion metodoPrediccion;
     private Double alfa;
-    private int cantidadPeriodos;
+    private Integer cantidadPeriodosAPredecir;
+    private Integer cantidadPeriodosAUsar;
 
 }

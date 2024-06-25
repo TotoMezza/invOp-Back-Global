@@ -1,5 +1,6 @@
 package com.example.invOp_Global.entities;
 
+import com.example.invOp_Global.enums.MetodoPrediccion;
 import jakarta.persistence.*;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -20,13 +21,11 @@ public class PrediccionDemanda extends EntidadBase{
     @Column(name = "fecha_prediccion")
     private LocalDate fechaPrediccion;
 
-    @NotNull
     @Column(name= "valor_prediccion")
     private Integer valorPrediccion;
 
     @ManyToOne
-    @NotNull
-    @JoinColumn(name="id_prediccion")
+    @JoinColumn(name="id_demanda")
     private Demanda demanda;
 
     @ManyToOne
@@ -35,4 +34,8 @@ public class PrediccionDemanda extends EntidadBase{
 
     @Column(name = "error_medido")
     private Double errorMedido;
+
+    @NotNull
+    @Column(name = "metodo_prediccion")
+    private MetodoPrediccion metodoPrediccion;
 }

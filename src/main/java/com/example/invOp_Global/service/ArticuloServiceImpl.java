@@ -231,6 +231,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
             articuloRepository.save(articulo);
     }
 
+    @Override
     public void modificarModeloInventario(Long articuloId) throws Exception{
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
             if(articulo.getModeloInventario().equals(ModeloInventario.LOTE_FIJO)){
@@ -243,12 +244,14 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
             }
     }
 
+    @Override
     public void modificarValoresProveedor(Long proveedorId,Long articuloId) throws Exception{
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
         Proveedor proveedor = proveedorRepository.findById(proveedorId).orElseThrow(() -> new Exception("Proveedor no encontrado"));
             ProveedorArticulo nuevoProveedor = proveedorArticuloService. findProveedorArticuloByArticuloAndProveedor(proveedorId, articuloId);
             articulo.setCostoAlmacenamiento(nuevoProveedor.getCostoAlmacenamiento());
             articulo.setCostoPedido(nuevoProveedor.getCostoPedido());
+            articulo.setPrecio(nuevoProveedor.getPrecioArticuloProveedor());
             articuloRepository.save(articulo);
 
     }

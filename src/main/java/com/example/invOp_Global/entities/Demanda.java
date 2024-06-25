@@ -29,11 +29,6 @@ public class Demanda extends EntidadBase{
     @Column(name = "total_demanda")
     private Integer totalDemanda;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id_demanda")
-    @Builder.Default
-    private List<Venta> listaVentas=new ArrayList<>();
-
     @NotNull
     @ManyToOne
     @JoinColumn(name = "id_articulo")

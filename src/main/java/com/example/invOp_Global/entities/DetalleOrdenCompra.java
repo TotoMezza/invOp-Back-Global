@@ -21,7 +21,7 @@ public class DetalleOrdenCompra extends EntidadBase{
     @JoinColumn(name = "id_Articulo")
     private Articulo articulo;
 
-    @NotNull
+
     @Column(name = "subtotal")
     private Double subtotal;
 

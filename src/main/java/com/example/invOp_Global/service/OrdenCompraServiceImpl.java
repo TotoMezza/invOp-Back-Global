@@ -54,8 +54,8 @@ public class OrdenCompraServiceImpl extends BaseServiceImpl<OrdenCompra,Long> im
        detalleOC.setSubtotal(articulo.getPrecio() * detalleOC.getCantidadOCD());
 
        ordenCompra.setTotalOrdenCompra(detalleOC.getSubtotal());
-       ordenCompra.setEstadoOrdenCompra(EstadoOrdenCompra.PENDIENTE);
        ordenCompra.agregarDetalleOrdenCompra(detalleOC);
+       ordenCompra.setEstadoOrdenCompra(EstadoOrdenCompra.PENDIENTE);
 
        ordenCompraRepository.save(ordenCompra);
         return ordenCompra;
