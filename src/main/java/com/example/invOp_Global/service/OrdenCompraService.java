@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 public interface OrdenCompraService extends BaseService<OrdenCompra,Long>{
+
     public List<OrdenCompra> findOrdenCompraByEstado(String filtroEstado) throws Exception;
 
     @Transactional

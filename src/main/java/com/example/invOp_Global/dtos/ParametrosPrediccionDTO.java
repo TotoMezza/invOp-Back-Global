@@ -18,5 +18,6 @@ public class ParametrosPrediccionDTO {
     private Double alfa;
     private Integer cantidadPeriodosAPredecir;
     private Integer cantidadPeriodosAUsar;
+    private Integer cantidadDemandaAnual;
 
 }

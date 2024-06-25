@@ -12,8 +12,14 @@ public interface PrediccionDemandaService extends BaseService<PrediccionDemanda,
 
     PrediccionDemanda findPrediccionDemandaArticuloByFechas(Long articuloId, int anio, int mes) throws  Exception;
 
-    Integer prediccionPMPonderado(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception;
+    Integer calculoPMPonderado(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception;
 
     Integer calculoPMPSuavizado(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception;
+
+    Integer calculoPEstacional(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception;
+
+    Integer calculoRegresionLineal(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception;
+
+    List<PrediccionDemanda> crearPrediccion(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception;
 }
 

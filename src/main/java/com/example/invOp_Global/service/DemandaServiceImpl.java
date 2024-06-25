@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,14 +34,14 @@ public class DemandaServiceImpl extends BaseServiceImpl<Demanda,Long> implements
     }
 
     @Override
-    public Demanda nuevaDemandaHistorica(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo){
-        int totalDemanda = calcularDemandaHistorica(fechaDesde,fechaHasta,idArticulo);
-        return nuevaDemandaHistorica(fechaDesde,fechaHasta,idArticulo,totalDemanda);
+    public Demanda nuevaDemanda(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo){
+        int totalDemanda = calcularDemanda(fechaDesde,fechaHasta,idArticulo);
+        return crearDemanda(fechaDesde,fechaHasta,idArticulo,totalDemanda);
 
     }
 
     @Override
-    public Integer calcularDemandaHistorica(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo){
+    public Integer calcularDemanda(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo){
         List<Venta> ventas = ventaRepository.findVentasByFechas(fechaDesde,fechaHasta);
         int totalDemanda = 0;
         for (Venta venta: ventas){
@@ -55,7 +54,8 @@ public class DemandaServiceImpl extends BaseServiceImpl<Demanda,Long> implements
         return totalDemanda;
     }
 
-    public Demanda nuevaDemandaHistorica(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo, Integer totalDemanda){
+    @Override
+    public Demanda crearDemanda(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo, Integer totalDemanda){
         Demanda demanda = new Demanda();
         demanda.setFechaDesde(fechaDesde);
         demanda.setFechaHasta(fechaHasta);

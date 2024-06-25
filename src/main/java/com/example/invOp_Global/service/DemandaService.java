@@ -7,7 +7,9 @@ import java.util.Date;
 
 public interface DemandaService extends  BaseService<Demanda,Long>{
 
-   public Demanda nuevaDemandaHistorica(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo);
+   Demanda nuevaDemanda(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo);
 
-   public Integer calcularDemandaHistorica(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo);
+   Integer calcularDemanda(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo);
+
+   Demanda crearDemanda(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo, Integer totalDemanda);
 }

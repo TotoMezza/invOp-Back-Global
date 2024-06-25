@@ -118,7 +118,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
         LocalDate esteAnio = LocalDate.now();
         LocalDate anioPasado = esteAnio.minusYears(1);
-        Integer demanda = demandaService.calcularDemandaHistorica(anioPasado,esteAnio,articuloId);
+        Integer demanda = demandaService.calcularDemanda(anioPasado,esteAnio,articuloId);
 
         articulo.setDemandaAnual(demanda);
         articuloRepository.save(articulo);
