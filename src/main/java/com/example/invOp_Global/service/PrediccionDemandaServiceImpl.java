@@ -27,7 +27,7 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
     private ArticuloService articuloService;
 
 
-    public PrediccionDemandaServiceImpl(BaseRepository<PrediccionDemanda, Long> baseRepository, PrediccionDemandaRepository prediccionDemandaRepository) {
+    public PrediccionDemandaServiceImpl(BaseRepository<PrediccionDemanda, Long> baseRepository, PrediccionDemandaRepository prediccionDemandaRepository, DemandaService demandaService, ArticuloService articuloService) {
         super(baseRepository);
         this.prediccionDemandaRepository=prediccionDemandaRepository;
         this.demandaService = demandaService;
@@ -46,18 +46,24 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
     }
 
     //Metodo para crear prediccion
+/*
     public List<PrediccionDemanda> crearPrediccion(ParametrosPrediccionDTO parametros) throws Exception{
         try{
-            Articulo articulo = articuloService.findById(parametros.getArticuloId());
             List<PrediccionDemanda> listaPredicciones = new ArrayList<>();
+
+            Articulo articulo = articuloService.findById(parametros.getArticuloId());
+
             for(int i=0; i<parametros.getCantidadPeriodos();i++){
 
             }
-            return listaPredicciones;
+
+
+
         }catch(Exception e){
 
         }
+        return listaPredicciones;
 
     }
-
+        */
 }
