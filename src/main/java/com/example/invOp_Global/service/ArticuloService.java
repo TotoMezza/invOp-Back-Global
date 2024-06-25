@@ -19,6 +19,14 @@ public interface ArticuloService extends BaseService<Articulo,Long>{
 
     int calcularStockSeguridad(Long articuloId);
 
+    Integer demandaAnual(Long articuloId) throws Exception;
+
+    Integer calculoPuntoPedido(Long articuloId) throws Exception;
+
+    Integer calculoLoteOptimo(Long articuloId) throws Exception;
+
+    Double calculoCGI(Long articuloId) throws Exception;
+
     void calculosLoteFijo(Long articuloId) throws Exception;
 
     Integer calculoCantidadMax(Long articuloId) throws Exception;
@@ -34,4 +42,6 @@ public interface ArticuloService extends BaseService<Articulo,Long>{
     void modificarModeloInventario(Long articuloId) throws Exception;
 
     void modificarValoresProveedor(Long proveedorId, Long articuloId) throws Exception;
+
+    Articulo calcularTodo(Long articuloId) throws Exception;
 }

@@ -114,6 +114,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         return stockSeguridad;
     }
 
+    @Override
     public Integer demandaAnual(Long articuloId) throws Exception {
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
         LocalDate esteAnio = LocalDate.now();
@@ -125,6 +126,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         return demanda;
     }
 
+    @Override
     public Integer calculoPuntoPedido(Long articuloId) throws Exception {
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
         int demanda = demandaAnual(articuloId);
@@ -137,6 +139,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
 
     }
 
+    @Override
     public Integer calculoLoteOptimo(Long articuloId) throws Exception {
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
         int demanda = demandaAnual(articuloId);
@@ -148,6 +151,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         return loteOptimo;
     }
 
+    @Override
     public Double calculoCGI(Long articuloId) throws Exception {
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
         Double precioArticulo = proveedorArticuloService.findProveedorArticuloByArticuloAndProveedor(articulo.getId(),articulo.getProveedorPred().getId()).getPrecioArticuloProveedor();
@@ -254,6 +258,18 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
             articulo.setPrecio(nuevoProveedor.getPrecioArticuloProveedor());
             articuloRepository.save(articulo);
 
+    }
+
+    @Override
+    public Articulo calcularTodo(Long articuloId) throws Exception {
+        Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
+        articulo.setStockSeguridad(calcularStockSeguridad(articuloId));
+        articulo.setDemandaAnual(demandaAnual(articuloId));
+        articulo.setPuntoPedido(calculoPuntoPedido(articuloId));
+        articulo.setLoteOptimo(calculoLoteOptimo(articuloId));
+        articulo.setCgi(calculoCGI(articuloId));
+        articuloRepository.save(articulo);
+        return articulo;
     }
 
 

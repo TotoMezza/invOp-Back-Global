@@ -36,7 +36,6 @@ public class ArticuloController extends BaseControllerImpl<Articulo, ArticuloSer
 
     @GetMapping("/faltantes")
     public ResponseEntity<List<FaltanteDto>> getArticulosFaltantes() {
-        try {
             List<Articulo> articulosFaltantes = articuloService.listadoFaltantes();
             List<FaltanteDto> faltantes = new ArrayList<>();
             for(Articulo articulo : articulosFaltantes){
@@ -48,14 +47,10 @@ public class ArticuloController extends BaseControllerImpl<Articulo, ArticuloSer
                 faltantes.add(faltante);
             }
             return ResponseEntity.ok(faltantes);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
     }
 
     @GetMapping("/reponer")
     public ResponseEntity<List<ReponerDto>> getArticulosAReponer() {
-        try {
             List<Articulo> articulosAReponer = articuloService.listadoAReponer();
             List<ReponerDto> ReponerFinal = new ArrayList<>();
             for (Articulo articulo : articulosAReponer) {
@@ -67,8 +62,23 @@ public class ArticuloController extends BaseControllerImpl<Articulo, ArticuloSer
                 ReponerFinal.add(areponer);
             }
             return ResponseEntity.ok(ReponerFinal);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    }
+
+
+    @PutMapping("/modelo-inventario/{articuloId}")
+    public ResponseEntity<?> modificarModeloInventario(@PathVariable Long articuloId) throws Exception {
+        articuloService.modificarModeloInventario(articuloId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/valores-proveedor/{proveedorId}/{articuloId}")
+    public ResponseEntity<?> modificarValoresProveedor(@PathVariable Long proveedorId, @PathVariable Long articuloId) throws Exception {
+        articuloService.modificarValoresProveedor(proveedorId, articuloId);
+        return ResponseEntity.ok().build();
+    }
+    @GetMapping("/calculos/{id}")
+    public ResponseEntity<?> calcularAtributos(@PathVariable Long id) throws Exception {
+        articuloService.calcularTodo(id);
+        return ResponseEntity.status(HttpStatus.OK).body("{Los calculos se han realizado de manera correcta}");
     }
 }
