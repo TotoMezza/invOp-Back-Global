@@ -36,7 +36,6 @@ public class DemandaServiceImpl extends BaseServiceImpl<Demanda,Long> implements
     @Override
     public Demanda nuevaDemanda(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo){
         int totalDemanda = calcularDemanda(fechaDesde,fechaHasta,idArticulo);
-        System.out.println("sali");
         return crearDemanda(fechaDesde,fechaHasta,idArticulo,totalDemanda);
 
     }
@@ -44,14 +43,10 @@ public class DemandaServiceImpl extends BaseServiceImpl<Demanda,Long> implements
     @Override
     public Integer calcularDemanda(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo){
         List<Venta> ventas = ventaRepository.findVentasByFechas(fechaDesde,fechaHasta);
-        System.out.println("Guarde las ventas");
         int totalDemanda = 0;
         for (Venta venta: ventas){
-            System.out.println("1er for");
             for (VentaDetalle ventaDetalle : venta.getVentaDetalles()){
-                System.out.println("2do For");
                 if (ventaDetalle.getArticulo().getId().equals(idArticulo)){
-                    System.out.println("Calculo demanda");
                     totalDemanda += ventaDetalle.getCantidadVenta();
                 }
             }
@@ -61,7 +56,6 @@ public class DemandaServiceImpl extends BaseServiceImpl<Demanda,Long> implements
 
     @Override
     public Demanda crearDemanda(LocalDate fechaDesde, LocalDate fechaHasta, Long idArticulo, Integer totalDemanda){
-        System.out.println("Crear");
         Demanda demanda = new Demanda();
         demanda.setFechaDesde(fechaDesde);
         demanda.setFechaHasta(fechaHasta);

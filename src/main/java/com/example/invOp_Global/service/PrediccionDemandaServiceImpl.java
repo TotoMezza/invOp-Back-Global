@@ -81,7 +81,7 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
                     int anio = fechaDesde.getYear();
                     int mes = fechaDesde.getMonthValue();
                     PrediccionDemanda prediccionMesAnterior = prediccionDemandaRepository.prediccionPorArticuloAndFechas(parametrosPrediccionDTO.getArticuloId(), anio, mes);
-                    if (!prediccionMesAnterior.equals(null)) {
+                    if (prediccionMesAnterior != null) {
                         demanda = prediccionMesAnterior.getValorPrediccion();
                     } else {
                         demanda = 0;
