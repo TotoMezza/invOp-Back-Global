@@ -18,15 +18,12 @@ import java.util.List;
 @Builder
 public class Venta extends EntidadBase {
 
-
     @Column(name = "total_venta")
     private Double totalVenta;
 
-    @NotNull
     @Column(name = "fecha_venta")
     private LocalDate fechaVenta;
 
-    @NotNull
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_venta")
     @Builder.Default

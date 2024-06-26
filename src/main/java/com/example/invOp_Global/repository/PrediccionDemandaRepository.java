@@ -3,10 +3,12 @@ package com.example.invOp_Global.repository;
 import com.example.invOp_Global.entities.PrediccionDemanda;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
+@Repository
 public interface PrediccionDemandaRepository extends BaseRepository<PrediccionDemanda,Long>{
     @Query(
             value = "SELECT * " +

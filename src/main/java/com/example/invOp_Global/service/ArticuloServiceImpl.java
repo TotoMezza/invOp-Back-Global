@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,9 +62,8 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
 
     @Override
     @Transactional
-    public void darBajaArticulo(Long idArticulo) throws Exception{
+    public boolean darBajaArticulo(Long idArticulo) throws Exception{
         Articulo articulo = articuloRepository.findById(idArticulo).orElseThrow(() -> new Exception("Artículo no encontrado"));
-
         List<OrdenCompra> ordenesPendientes = ordenCompraRepository.findOrdenCompraByEstadoAndArticulo("PENDIENTE",idArticulo);
         List<OrdenCompra> ordenesEnCurso = ordenCompraRepository.findOrdenCompraByEstadoAndArticulo("EN-CURSO",idArticulo);
         if (!ordenesPendientes.isEmpty()){
@@ -73,6 +73,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
             throw new Exception("El artículo no se puede dar de baja porque tiene órdenes de compra en curso");
         }
         articuloRepository.delete(articulo);
+        return true;
     }
 
     @Override
@@ -103,7 +104,9 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
     public int calcularStockSeguridad(Long articuloId){
         Articulo articulo = findById(articuloId);
         double valorZ = 1.64 ;
+        System.out.println("Entro a query");
         Double tiempoDemora = proveedorArticuloService.findProveedorArticuloByArticuloAndProveedor(articulo.getId(),articulo.getProveedorPred().getId()).getTiempoDemora();
+        System.out.println("salgo");
         Double tiempoRevision = articulo.getTiempoRevision();
         if (tiempoRevision == null){
             tiempoRevision = 0.0;
@@ -238,13 +241,16 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
     @Override
     public void modificarModeloInventario(Long articuloId) throws Exception{
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
+        System.out.println("Hola");
             if(articulo.getModeloInventario().equals(ModeloInventario.LOTE_FIJO)){
-                modificarIntervaloFijo(articuloId);
-                calculosLoteFijo(articuloId);
+                System.out.println("Hola1");
+                modificarLoteFijo(articuloId);
+                System.out.println("Hola2");
+                calculosIntervaloFijo(articuloId);
             }
             if(articulo.getModeloInventario().equals(ModeloInventario.INTERVALO_FIJO)){
-                modificarLoteFijo(articuloId);
-                calculosIntervaloFijo(articuloId);
+                modificarIntervaloFijo(articuloId);
+                calculosLoteFijo(articuloId);
             }
     }
 
@@ -261,15 +267,20 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
     }
 
     @Override
-    public Articulo calcularTodo(Long articuloId) throws Exception {
+    public void calcularTodo(Long articuloId) throws Exception {
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
         articulo.setStockSeguridad(calcularStockSeguridad(articuloId));
         articulo.setDemandaAnual(demandaAnual(articuloId));
-        articulo.setPuntoPedido(calculoPuntoPedido(articuloId));
-        articulo.setLoteOptimo(calculoLoteOptimo(articuloId));
+        if(articulo.getModeloInventario() == ModeloInventario.LOTE_FIJO){
+            articulo.setPuntoPedido(calculoPuntoPedido(articuloId));
+            articulo.setLoteOptimo(calculoLoteOptimo(articuloId));
+        } else if ((articulo.getModeloInventario() == ModeloInventario.INTERVALO_FIJO)) {
+
+            articulo.setCantidadMaxima(calculoCantidadMax(articuloId));
+            articulo.setCantidadAPedir(calculoCantAPedir(articuloId));
+        }
         articulo.setCgi(calculoCGI(articuloId));
         articuloRepository.save(articulo);
-        return articulo;
     }
 
 

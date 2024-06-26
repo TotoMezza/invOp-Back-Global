@@ -11,7 +11,7 @@ public interface ArticuloService extends BaseService<Articulo,Long>{
     public  void disminuirStock(Articulo articulo, Integer cantVendida);
 
     @Transactional
-    void darBajaArticulo(Long idArticulo) throws Exception;
+    boolean darBajaArticulo(Long idArticulo) throws Exception;
 
     List<Articulo> listadoFaltantes();
 
@@ -43,5 +43,5 @@ public interface ArticuloService extends BaseService<Articulo,Long>{
 
     void modificarValoresProveedor(Long proveedorId, Long articuloId) throws Exception;
 
-    Articulo calcularTodo(Long articuloId) throws Exception;
+    void calcularTodo(Long articuloId) throws Exception;
 }

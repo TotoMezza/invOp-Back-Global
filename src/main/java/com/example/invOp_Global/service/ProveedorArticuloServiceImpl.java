@@ -15,27 +15,29 @@ public class ProveedorArticuloServiceImpl extends BaseServiceImpl<ProveedorArtic
     @Autowired
     private ProveedorArticuloRepository proveedorArticuloRepository;
 
-    public ProveedorArticuloServiceImpl(BaseRepository<ProveedorArticulo, Long> baseRepository) {
-        super(baseRepository);
+    public ProveedorArticuloServiceImpl(ProveedorArticuloRepository proveedorArticuloRepository){
+        super(proveedorArticuloRepository);
+        this.proveedorArticuloRepository = proveedorArticuloRepository;
     }
 
     @Override
     @Transactional
-    public List<ProveedorArticulo> findProveedoresByArticulo(Long articulo_id) {
-            return proveedorArticuloRepository.findProveedoresByArticulo(articulo_id);
+    public List<ProveedorArticulo> findProveedoresByArticulo(Long articuloId) throws Exception{
+        try {
+            return proveedorArticuloRepository.findProveedoresByArticulo(articuloId);
+        } catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
     }
 
-    @Override
-    @Transactional
     public List<ProveedorArticulo> findArticulosByProveedor(Long proveedor_id) {
             List<ProveedorArticulo> buscarArticulos = proveedorArticuloRepository.findArticulosByProveedor(proveedor_id);
             return buscarArticulos;
     }
 
-    @Override
-    @Transactional
-    public ProveedorArticulo findProveedorArticuloByArticuloAndProveedor(Long proveedor_id, Long articulo_id){
-        return proveedorArticuloRepository.findProveedorArticuloByProveedorAndArticulo(proveedor_id,articulo_id);
+
+    public ProveedorArticulo findProveedorArticuloByArticuloAndProveedor(Long proveedorId, Long articuloId){
+        return proveedorArticuloRepository.findProveedorArticuloByProveedorAndArticulo(proveedorId,articuloId);
     }
 
 }

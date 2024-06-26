@@ -11,13 +11,15 @@ import java.util.List;
 @Repository
 public interface ProveedorArticuloRepository extends BaseRepository<ProveedorArticulo,Long>{
 
+
+
     @Query(
             value = "SELECT * " +
                     "FROM proveedor_articulo pa " +
-                    "WHERE pa.id_articulo = :articulo_id",
+                    "WHERE pa.id_articulo = :articuloId",
             nativeQuery = true
     )
-    List<ProveedorArticulo> findProveedoresByArticulo(@PathVariable("articulo_id") Long articulo_id);
+    List<ProveedorArticulo> findProveedoresByArticulo(@PathVariable("articuloId") Long articuloId);
 
 
     @Query(
@@ -29,8 +31,8 @@ public interface ProveedorArticuloRepository extends BaseRepository<ProveedorArt
     )
     List<ProveedorArticulo> findArticulosByProveedor(@Param("proveedor_id") Long proveedor_id);
 
-    @Query(value = "SELECT pa FROM ProveedorArticulo as pa " +
-                    "WHERE pa.id_proveedor = :proveedor_id AND pa.id_articulo = :articulo_id;", nativeQuery = true
+    @Query(value = "SELECT * FROM proveedor_articulo as pa " +
+                    "WHERE pa.id_proveedor = :proveedorId AND pa.id_articulo = :articuloId;", nativeQuery = true
     )
-    ProveedorArticulo findProveedorArticuloByProveedorAndArticulo(@Param(value = "proveedor_id") Long proveedor_id, @Param(value = "articulo_id") Long articulo_id);
+    ProveedorArticulo findProveedorArticuloByProveedorAndArticulo(@Param(value = "proveedorId") Long proveedorId, @Param(value = "articuloId") Long articuloId);
 }

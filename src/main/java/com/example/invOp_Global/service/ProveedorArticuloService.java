@@ -6,12 +6,7 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 public interface ProveedorArticuloService extends BaseService<ProveedorArticulo,Long>{
-    @Transactional
-    public List<ProveedorArticulo> findProveedoresByArticulo(Long filtroArticulo) throws Exception;
-
-    @Transactional
-    public List<ProveedorArticulo> findArticulosByProveedor(Long filtroProveedor) throws Exception;
-
-    @Transactional
-    public ProveedorArticulo findProveedorArticuloByArticuloAndProveedor(Long proveedor_id, Long articulo_id);
+    public List<ProveedorArticulo> findProveedoresByArticulo(Long articuloId) throws Exception;
+    public List<ProveedorArticulo> findArticulosByProveedor(Long proveedor_id);
+    public ProveedorArticulo findProveedorArticuloByArticuloAndProveedor(Long proveedorId, Long articuloId);
 }

@@ -32,12 +32,13 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
     private ArticuloRepository articuloRepository;
 
 
-    public PrediccionDemandaServiceImpl(BaseRepository<PrediccionDemanda, Long> baseRepository, PrediccionDemandaRepository prediccionDemandaRepository) {
-        super(baseRepository);
+    public PrediccionDemandaServiceImpl(PrediccionDemandaRepository prediccionDemandaRepository) {
+        super(prediccionDemandaRepository);
         this.prediccionDemandaRepository = prediccionDemandaRepository;
         this.demandaService = demandaService;
         this.articuloService = articuloService;
         this.articuloRepository = articuloRepository;
+        this.articuloService = articuloService;
 
     }
 

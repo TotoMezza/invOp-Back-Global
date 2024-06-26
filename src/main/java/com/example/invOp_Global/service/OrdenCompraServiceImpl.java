@@ -7,6 +7,7 @@ import com.example.invOp_Global.enums.EstadoOrdenCompra;
 import com.example.invOp_Global.repository.ArticuloRepository;
 import com.example.invOp_Global.repository.BaseRepository;
 import com.example.invOp_Global.repository.OrdenCompraRepository;
+import com.example.invOp_Global.repository.ProveedorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,15 @@ public class OrdenCompraServiceImpl extends BaseServiceImpl<OrdenCompra,Long> im
     private OrdenCompraRepository ordenCompraRepository;
     @Autowired
     private ArticuloRepository articuloRepository;
+    @Autowired
+    private ProveedorRepository proveedorRepository;
 
-    public OrdenCompraServiceImpl(BaseRepository<OrdenCompra, Long> baseRepository) {
-        super(baseRepository);
+    public OrdenCompraServiceImpl(OrdenCompraRepository ordenCompraRepository, ProveedorRepository proveedorRepository){
+        super(ordenCompraRepository);
         this.ordenCompraRepository = ordenCompraRepository;
+        this.proveedorRepository = proveedorRepository;
         this.articuloRepository = articuloRepository;
+
     }
     @Override
     @Transactional

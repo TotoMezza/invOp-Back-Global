@@ -12,7 +12,6 @@ public class InvOpGlobalApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(InvOpGlobalApplication.class, args);
-
 		System.out.println("Hola, estoy andando bien");
 	}
 

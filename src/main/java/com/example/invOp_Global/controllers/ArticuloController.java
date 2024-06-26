@@ -29,9 +29,13 @@ public class ArticuloController extends BaseControllerImpl<Articulo, ArticuloSer
 
 
     @DeleteMapping("/baja/{idArticulo}")
-    public ResponseEntity<Void> darBajaArticulo(@PathVariable Long idArticulo) throws Exception {
-        articuloService.darBajaArticulo(idArticulo);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> darBajaArticulo(@PathVariable Long idArticulo) throws Exception {
+        try {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(articuloService.darBajaArticulo(idArticulo));
+        }        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error, por favor intente más tarde\"}");
+        }
+
     }
 
     @GetMapping("/faltantes")
@@ -76,7 +80,7 @@ public class ArticuloController extends BaseControllerImpl<Articulo, ArticuloSer
         articuloService.modificarValoresProveedor(proveedorId, articuloId);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/calculos/{id}")
+    @PutMapping("/calculos/{id}")
     public ResponseEntity<?> calcularAtributos(@PathVariable Long id) throws Exception {
         articuloService.calcularTodo(id);
         return ResponseEntity.status(HttpStatus.OK).body("{Los calculos se han realizado de manera correcta}");

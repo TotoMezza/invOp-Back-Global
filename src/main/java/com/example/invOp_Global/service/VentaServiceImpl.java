@@ -60,10 +60,7 @@ public class VentaServiceImpl extends BaseServiceImpl<Venta, Long> implements Ve
             ventaDetalle.setArticulo(articulo);
             ventaDetalle.setCantidadVenta(detalleVenta.getCantidad());
             ventaDetalle.setSubtotal(detalleVenta.getCantidad()*articulo.getPrecio());
-
             nuevaVenta.AgregarDetalleVenta(ventaDetalle);
-            nuevaVenta.setTotalVenta(nuevaVenta.getTotalVenta()+ventaDetalle.getSubtotal());
-
             articuloService.disminuirStock(articulo, detalleVenta.getCantidad());
 
             if (articulo.getStockActual() <= articulo.getPuntoPedido()){
@@ -71,6 +68,12 @@ public class VentaServiceImpl extends BaseServiceImpl<Venta, Long> implements Ve
             }
 
         }
+        Double total = 0.0;
+        for (VentaDetalle detalle : nuevaVenta.getVentaDetalles()){
+            total = total + (detalle.getCantidadVenta() * detalle.getArticulo().getPrecio());
+        }
+            nuevaVenta.setTotalVenta(total);
+            ventaRepository.save(nuevaVenta);
             return  nuevaVenta;
 
     }
