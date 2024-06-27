@@ -32,6 +32,11 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
     private VentaRepository ventaRepository;
     @Autowired
     private ProveedorRepository proveedorRepository;
+    @Autowired
+    private DetalleOCService detalleOCService;
+
+    @Autowired
+    private DetalleOCRepository detalleOCRepository;
 
     public ArticuloServiceImpl(BaseRepository<Articulo, Long> baseRepository, ArticuloRepository articuloRepository) {
         super(baseRepository);
@@ -42,6 +47,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         this.proveedorArticuloRepository = proveedorArticuloRepository;
         this.proveedorArticuloService = proveedorArticuloService;
         this.proveedorRepository = proveedorRepository;
+        this.detalleOCService = detalleOCService;
     }
 
     @Override
