@@ -1,9 +1,6 @@
 package com.example.invOp_Global.service;
 
-import com.example.invOp_Global.entities.Articulo;
-import com.example.invOp_Global.entities.OrdenCompra;
-import com.example.invOp_Global.entities.Proveedor;
-import com.example.invOp_Global.entities.ProveedorArticulo;
+import com.example.invOp_Global.entities.*;
 import com.example.invOp_Global.enums.ModeloInventario;
 import com.example.invOp_Global.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -69,9 +66,13 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         if (!ordenesPendientes.isEmpty()){
             throw new Exception("El artículo no se puede dar de baja porque tiene órdenes de compra pendientes");
         }
-        if (!ordenesEnCurso.isEmpty()){
-            throw new Exception("El artículo no se puede dar de baja porque tiene órdenes de compra en curso");
+        // Primero elimina los registros de ordencompradetalle relacionados
+        List<DetalleOrdenCompra> detalles = detalleOCService.findDetalleOCByArticulo(idArticulo);
+
+        for (DetalleOrdenCompra detalle : detalles) {
+            detalleOCRepository.delete(detalle);
         }
+
         articuloRepository.delete(articulo);
         return true;
     }

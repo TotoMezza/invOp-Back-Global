@@ -1,6 +1,7 @@
 package com.example.invOp_Global.entities;
 
 import com.example.invOp_Global.enums.ModeloInventario;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -14,6 +15,7 @@ import static com.example.invOp_Global.enums.ModeloInventario.LOTE_FIJO;
 @Getter
 @Setter
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
 public class Articulo extends EntidadBase {
 
@@ -65,7 +67,7 @@ public class Articulo extends EntidadBase {
     @Column(name = "tiempo_revision")
     private Double tiempoRevision;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "proveedor_predeterminado")
     private Proveedor proveedorPred;
 

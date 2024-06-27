@@ -1,6 +1,7 @@
 package com.example.invOp_Global.entities;
 
 import com.example.invOp_Global.enums.EstadoOrdenCompra;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -17,6 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class OrdenCompra extends EntidadBase{
 
     @NotNull
@@ -37,7 +39,7 @@ public class OrdenCompra extends EntidadBase{
     private Proveedor proveedor;
 
     @NotNull
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     @JoinColumn(name ="id_OrdenCompra")
     private List<DetalleOrdenCompra> DetallesOC = new ArrayList<>();

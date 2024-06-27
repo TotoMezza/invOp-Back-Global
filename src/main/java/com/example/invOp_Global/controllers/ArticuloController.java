@@ -29,14 +29,18 @@ public class ArticuloController extends BaseControllerImpl<Articulo, ArticuloSer
 
 
     @DeleteMapping("/baja/{idArticulo}")
-    public ResponseEntity<?> darBajaArticulo(@PathVariable Long idArticulo) throws Exception {
+    public ResponseEntity<?> darBajaArticulo(@PathVariable Long idArticulo) {
         try {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(articuloService.darBajaArticulo(idArticulo));
-        }        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error, por favor intente más tarde\"}");
+            boolean resultado = articuloService.darBajaArticulo(idArticulo);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(resultado);
+        } catch (Exception e) {
+            // Agregar registro del error para diagnosticar el problema
+            e.printStackTrace();
+            // Proporcionar un mensaje de error más específico basado en el mensaje de excepción
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
-
     }
+
 
     @GetMapping("/faltantes")
     public ResponseEntity<List<FaltanteDto>> getArticulosFaltantes() {

@@ -1,6 +1,7 @@
 package com.example.invOp_Global.entities;
 
 import com.example.invOp_Global.enums.MetodoPrediccion;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ErrorMedido extends EntidadBase{
 
     @Column(name = "porcentaje")
@@ -27,7 +29,7 @@ public class ErrorMedido extends EntidadBase{
     @Column(name = "valor_prediccion_demanda")
     private Integer prediccionDemanda;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_articulo")
     private Articulo articulo;
 

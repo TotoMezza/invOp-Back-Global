@@ -1,5 +1,6 @@
 package com.example.invOp_Global.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -12,6 +13,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 @Getter
 @Setter
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ProveedorArticulo extends EntidadBase{
 
 
@@ -35,7 +37,7 @@ public class ProveedorArticulo extends EntidadBase{
     private Articulo articulo;
 
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_proveedor")
     private Proveedor proveedor;
 
