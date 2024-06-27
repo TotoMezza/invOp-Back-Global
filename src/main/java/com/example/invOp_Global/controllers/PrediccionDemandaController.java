@@ -54,4 +54,10 @@ public class PrediccionDemandaController extends BaseControllerImpl<PrediccionDe
         return ResponseEntity.ok(prediccionDemandaList);
     }
 
+    @PostMapping("/crear-prediccion-pred")
+    public ResponseEntity<List<PrediccionDemanda>> crearPrediccionPredeterminada(@RequestBody ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception {
+        List<PrediccionDemanda> prediccionDemandaList = prediccionDemandaService.crearPrediccionPredeterminada(parametrosPrediccionDTO);
+        return ResponseEntity.ok(prediccionDemandaList);
+    }
+
 }

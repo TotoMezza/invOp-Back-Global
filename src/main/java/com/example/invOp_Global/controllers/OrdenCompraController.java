@@ -1,5 +1,7 @@
 package com.example.invOp_Global.controllers;
 
+import com.example.invOp_Global.dtos.CrearOCDto;
+import com.example.invOp_Global.dtos.ModificarOCDto;
 import com.example.invOp_Global.entities.Articulo;
 import com.example.invOp_Global.entities.OrdenCompra;
 import com.example.invOp_Global.service.OrdenCompraService;
@@ -33,6 +35,11 @@ public class OrdenCompraController extends BaseControllerImpl<OrdenCompra, Orden
         OrdenCompra ordenCompra = ordenCompraService.crearOrdenCompra(articulo);
         return ResponseEntity.ok(ordenCompra);
     }
+    @PostMapping("/nueva")
+    public ResponseEntity<OrdenCompra> nuevaOC(@RequestBody CrearOCDto crearOCDto){
+        OrdenCompra ordenCompra = ordenCompraService.nuevaOC(crearOCDto);
+        return ResponseEntity.ok(ordenCompra);
+    }
 
     @PutMapping("/en-curso/{ordenCompraId}")
     public ResponseEntity<Void> ordenEnCurso(@PathVariable Long ordenCompraId) throws Exception {
@@ -51,4 +58,11 @@ public class OrdenCompraController extends BaseControllerImpl<OrdenCompra, Orden
         ordenCompraService.cancelarOrden(ordenCompraId);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/modificar")
+    public ResponseEntity<?> modificarOC(@RequestBody ModificarOCDto modificarOCDto) throws Exception{
+        ordenCompraService.modificarOC(modificarOCDto);
+        return ResponseEntity.ok().build();
+    }
+
 }

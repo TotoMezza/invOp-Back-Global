@@ -6,7 +6,6 @@ import com.example.invOp_Global.entities.PrediccionDemanda;
 
 import com.example.invOp_Global.enums.MetodoPrediccion;
 import com.example.invOp_Global.repository.ArticuloRepository;
-import com.example.invOp_Global.repository.BaseRepository;
 import com.example.invOp_Global.repository.PrediccionDemandaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -279,6 +278,50 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
+    }
+
+    @Override
+    public List<PrediccionDemanda> crearPrediccionPredeterminada(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception {
+        try {
+            Articulo articulo = articuloService.findById(parametrosPrediccionDTO.getArticuloId());
+            List<PrediccionDemanda> listaPredicciones = new ArrayList<>();
+            LocalDate fechaInicial = LocalDate.of(parametrosPrediccionDTO.getAnioPrediccion(),parametrosPrediccionDTO.getMesPrediccion(), 1);
+            for (int i = 0; i < parametrosPrediccionDTO.getCantidadPeriodosAPredecir(); i++) {
+                int valorPrediccion = 0;
+                switch (articulo.getMetodoPred()) {
+                    case PROMEDIO_MOVIL_PONDERADO:
+                        valorPrediccion = calculoPMPonderado(parametrosPrediccionDTO);
+                        break;
+                    case PROMEDIO_MOVIL_SUAVIZADO:
+                        valorPrediccion = calculoPMPSuavizado(parametrosPrediccionDTO);
+                        break;
+                    case REGRESION_LINEAL:
+                        valorPrediccion = calculoRegresionLineal(parametrosPrediccionDTO);
+                        break;
+                    case ESTACIONALIDAD:
+                        valorPrediccion = calculoPEstacional(parametrosPrediccionDTO);
+                        break;
+                }
+
+                LocalDate fechaDesde = fechaInicial.plusMonths(i);
+                PrediccionDemanda prediccion = new PrediccionDemanda();
+                prediccion.setValorPrediccion(valorPrediccion);
+                prediccion.setFechaPrediccion(fechaDesde);
+                prediccion.setArticulo(articulo);
+                prediccion.setMetodoPrediccion(parametrosPrediccionDTO.getMetodoPrediccion());
+                prediccionDemandaRepository.save(prediccion);
+                listaPredicciones.add(prediccion);
+            }
+            return listaPredicciones;
+
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    public void calcularMetodoPredeterminado(ParametrosPrediccionDTO parametrosPrediccionDTO){
+        Articulo articulo = articuloService.findById(parametrosPrediccionDTO.getArticuloId());
+
     }
 
 }

@@ -32,9 +32,6 @@ public class PrediccionDemanda extends EntidadBase{
     @JoinColumn(name ="id_articulo")
     private Articulo articulo;
 
-    @Column(name = "error_medido")
-    private Double errorMedido;
-
     @NotNull
     @Column(name = "metodo_prediccion")
     @Enumerated(EnumType.STRING)

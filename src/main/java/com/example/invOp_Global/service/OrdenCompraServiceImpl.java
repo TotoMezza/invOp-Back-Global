@@ -1,12 +1,13 @@
 package com.example.invOp_Global.service;
 
 import com.example.invOp_Global.dtos.CrearOCDto;
+import com.example.invOp_Global.dtos.ModificarOCDto;
 import com.example.invOp_Global.entities.Articulo;
 import com.example.invOp_Global.entities.DetalleOrdenCompra;
 import com.example.invOp_Global.entities.OrdenCompra;
+import com.example.invOp_Global.entities.Proveedor;
 import com.example.invOp_Global.enums.EstadoOrdenCompra;
 import com.example.invOp_Global.repository.ArticuloRepository;
-import com.example.invOp_Global.repository.BaseRepository;
 import com.example.invOp_Global.repository.OrdenCompraRepository;
 import com.example.invOp_Global.repository.ProveedorRepository;
 import jakarta.transaction.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,18 +50,28 @@ public class OrdenCompraServiceImpl extends BaseServiceImpl<OrdenCompra,Long> im
         List<OrdenCompra> buscarOrden = ordenCompraRepository.findOrdenCompraByEstadoAndArticulo(estado,articulo_id);
         return buscarOrden;
     }
-/*
+
+    @Override
     public OrdenCompra nuevaOC(CrearOCDto crearOCDto){
         Articulo articulo = articuloService.findById(crearOCDto.getArticuloId());
         OrdenCompra nuevaOC = new OrdenCompra();
         nuevaOC.setFechaOrdenCompra(LocalDate.now());
         nuevaOC.setEstadoOrdenCompra(EstadoOrdenCompra.PENDIENTE);
-        nuevaOC.setProveedor();
+        nuevaOC.setProveedor(articulo.getProveedorPred());
+        DetalleOrdenCompra detalle = new DetalleOrdenCompra();
+        detalle.setCantidadOCD(crearOCDto.getCantidad());
+        detalle.setArticulo(articulo);
+        detalle.setSubtotal(detalle.getCantidadOCD()*articulo.getPrecio());
+        List <DetalleOrdenCompra> detallesOrdenCompras = new ArrayList<>();
+        detallesOrdenCompras.add(detalle);
+        nuevaOC.setDetallesOC(detallesOrdenCompras);
+        nuevaOC.setTotalOrdenCompra(detalle.getSubtotal());
 
+        ordenCompraRepository.save(nuevaOC);
 
         return nuevaOC;
     };
-*/
+
     @Override
     @Transactional
     public OrdenCompra crearOrdenCompra(Articulo articulo) {
@@ -72,12 +84,30 @@ public class OrdenCompraServiceImpl extends BaseServiceImpl<OrdenCompra,Long> im
        detalleOC.setCantidadOCD(articulo.getLoteOptimo());
        detalleOC.setSubtotal(articulo.getPrecio() * detalleOC.getCantidadOCD());
 
+        List <DetalleOrdenCompra> detallesOrdenCompras = new ArrayList<>();
+        detallesOrdenCompras.add(detalleOC);
        ordenCompra.setTotalOrdenCompra(detalleOC.getSubtotal());
-       ordenCompra.agregarDetalleOrdenCompra(detalleOC);
+       ordenCompra.setDetallesOC(detallesOrdenCompras);
        ordenCompra.setEstadoOrdenCompra(EstadoOrdenCompra.PENDIENTE);
 
        ordenCompraRepository.save(ordenCompra);
         return ordenCompra;
+    }
+
+    @Override
+    public void modificarOC(ModificarOCDto modificarOCDto) throws Exception{
+        OrdenCompra ordenCompra = ordenCompraRepository.findById(modificarOCDto.getOrdenCompraId())
+                .orElseThrow(()-> new Exception("OrdenCompra no encontrada"));
+        if (ordenCompra.getEstadoOrdenCompra() == EstadoOrdenCompra.PENDIENTE){
+            Proveedor proveedor = proveedorRepository.getReferenceById(modificarOCDto.getProveedorId());
+            ordenCompra.setProveedor(proveedor);
+            DetalleOrdenCompra detalle = ordenCompra.getDetallesOC().get(0);
+            detalle.setCantidadOCD(modificarOCDto.getCantidad());
+
+        }else{
+            throw new Exception("La orden de compra no se puede modificar");
+        }
+        ordenCompraRepository.save(ordenCompra);
     }
 
     @Override

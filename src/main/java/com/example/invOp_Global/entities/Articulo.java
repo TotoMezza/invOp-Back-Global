@@ -1,5 +1,6 @@
 package com.example.invOp_Global.entities;
 
+import com.example.invOp_Global.enums.MetodoPrediccion;
 import com.example.invOp_Global.enums.ModeloInventario;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -63,7 +64,6 @@ public class Articulo extends EntidadBase {
     @Column(name = "cantidad_a_pedir")
     private Integer cantidadAPedir;
 
-
     @Column(name = "tiempo_revision")
     private Double tiempoRevision;
 
@@ -71,5 +71,7 @@ public class Articulo extends EntidadBase {
     @JoinColumn(name = "proveedor_predeterminado")
     private Proveedor proveedorPred;
 
+    @Column(name = "prediccion_predeterminada")
+    private MetodoPrediccion metodoPred;
 
 }

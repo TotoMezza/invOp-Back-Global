@@ -39,14 +39,10 @@ public class OrdenCompra extends EntidadBase{
     private Proveedor proveedor;
 
     @NotNull
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     @JoinColumn(name ="id_OrdenCompra")
-    private List<DetalleOrdenCompra> DetallesOC = new ArrayList<>();
-
-    public void agregarDetalleOrdenCompra(DetalleOrdenCompra ordenCompraDetalle){
-        DetallesOC.add(ordenCompraDetalle);
-    }
+    private List<DetalleOrdenCompra> detallesOC = new ArrayList<>();
 
 
 }
