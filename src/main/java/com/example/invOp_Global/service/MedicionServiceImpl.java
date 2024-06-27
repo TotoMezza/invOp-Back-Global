@@ -34,7 +34,8 @@ public class MedicionServiceImpl extends BaseServiceImpl<MedicionError,Long> imp
             double sumatoriaErrorPMSE = 0.0;
             double sumatoriaErrorRL = 0.0;
             double sumatoriaErrorEst = 0.0;
-            List<Integer> listaDemandasHistoricas = crearListaHistoricasParaError(12, datosError.getFechaDesde(), datosError.getIdArticulo());
+
+            List<Integer> listaDemandasHistoricas = crearListaHistoricasParaError(12, datosError.getFechaDesde(), datosError.getArticuloId());
             int denominador = 0;
             long cantidadMeses = ChronoUnit.MONTHS.between(datosError.getFechaDesde(), datosError.getFechaHasta());
             for(int i = 0; i < cantidadMeses+1; i++) {
@@ -55,10 +56,16 @@ public class MedicionServiceImpl extends BaseServiceImpl<MedicionError,Long> imp
             }
             int demandaReal = listaDemandasHistoricas.get(i);
             if (demandaReal > 0) {
+                    int pronosticoDemandaPMP = 0;
+                    int pronosticoDemandaPMSE = 0;
+                    int pronosticoDemandaRL = 0;
+                    int pronosticoDemandaEst = 0;
                     double errorAbsolutoPMP = ((double) Math.abs(demandaReal - pronosticoDemandaPMP)) / demandaReal;
-                    double errorAbsolutoPMSE = ((double) Math.abs(demandaReal - pronosticoDemanda)) / demandaReal;
-                    double errorAbsolutoRL = ((double) Math.abs(demandaReal - pronosticoDemanda)) / demandaReal;
-                    double errorAbsolutoEst = ((double) Math.abs(demandaReal - pronosticoDemanda)) / demandaReal;
+                    double errorAbsolutoPMSE = ((double) Math.abs(demandaReal - pronosticoDemandaPMSE)) / demandaReal;
+                    double errorAbsolutoRL = ((double) Math.abs(demandaReal - pronosticoDemandaRL)) / demandaReal;
+                    double errorAbsolutoEst = ((double) Math.abs(demandaReal - pronosticoDemandaEst)) / demandaReal;
+
+
 
                     sumatoriaError += errorAbsoluto;
                     denominador += 1;

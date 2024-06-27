@@ -1,7 +1,8 @@
 package com.example.invOp_Global.dtos;
 
+import com.example.invOp_Global.entities.EntidadBase;
 import com.example.invOp_Global.enums.MetodoPrediccion;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
