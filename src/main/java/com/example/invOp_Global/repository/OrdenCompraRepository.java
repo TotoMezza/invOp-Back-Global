@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OrdenCompraRepository extends BaseRepository<OrdenCompra,Long>{
+public interface OrdenCompraRepository extends BaseRepository<OrdenCompra,Long> {
 
     @Query(
             value = "SELECT * FROM ordenes_compra WHERE estado_oc LIKE %:estado%",

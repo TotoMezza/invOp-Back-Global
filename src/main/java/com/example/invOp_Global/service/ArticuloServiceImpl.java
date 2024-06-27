@@ -69,11 +69,8 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         Articulo articulo = articuloRepository.findById(idArticulo).orElseThrow(() -> new Exception("Artículo no encontrado"));
         List<OrdenCompra> ordenesPendientes = ordenCompraRepository.findOrdenCompraByEstadoAndArticulo("PENDIENTE", idArticulo);
         List<OrdenCompra> ordenesEnCurso = ordenCompraRepository.findOrdenCompraByEstadoAndArticulo("EN-CURSO", idArticulo);
-        if (!ordenesPendientes.isEmpty()) {
+        if (!ordenesPendientes.isEmpty() && !ordenesEnCurso.isEmpty() )  {
             throw new Exception("El artículo no se puede dar de baja porque tiene órdenes de compra pendientes");
-        }
-        if (!ordenesEnCurso.isEmpty()) {
-            throw new Exception("El artículo no se puede dar de baja porque tiene órdenes de compra en curso");
         }
         List<DetalleOrdenCompra> detalles = detalleOCService.findDetalleOCByArticulo(idArticulo);
         for (DetalleOrdenCompra detalle : detalles) {
@@ -86,7 +83,8 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
             proveedorArticuloService.delete(idLinea);
         }
 
-        articuloRepository.delete(articulo);
+
+        baseRepository.deleteById(idArticulo);
         return true;
     }
 
@@ -292,8 +290,5 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         articulo.setCgi(calculoCGI(articuloId));
         articuloRepository.save(articulo);
     }
-
-
-
 
 }
