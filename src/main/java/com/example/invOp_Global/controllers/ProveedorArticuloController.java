@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(path = "api/v1/proveedorarticulo")
@@ -21,7 +19,7 @@ public class ProveedorArticuloController extends BaseControllerImpl<ProveedorArt
     public ResponseEntity<?> findProveedoresByArticulo(@PathVariable Long articuloId) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(servicio.findProveedoresByArticulo(articuloId));
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }
     }
@@ -30,16 +28,19 @@ public class ProveedorArticuloController extends BaseControllerImpl<ProveedorArt
     public ResponseEntity<?> findArticulosByProveedor(@RequestParam Long proveedor_id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(servicio.findArticulosByProveedor(proveedor_id));
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }
     }
+
     @GetMapping("/findProveedorArticuloByArticuloAndProveedor")
-    public ResponseEntity<?> findProveedorArticuloByArticuloAndProveedor(@RequestParam Long proveedorId,@RequestParam Long articuloId) {
+    public ResponseEntity<?> findProveedorArticuloByArticuloAndProveedor(@RequestParam Long proveedorId, @RequestParam Long articuloId) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(servicio.findProveedorArticuloByArticuloAndProveedor(proveedorId, articuloId));
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("{\"error\": \"" + e.getMessage() + "\"}"));
         }
     }
+
 }
+

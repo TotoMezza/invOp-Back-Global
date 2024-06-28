@@ -1,7 +1,6 @@
 package com.example.invOp_Global.service;
 
 import com.example.invOp_Global.entities.ProveedorArticulo;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 
