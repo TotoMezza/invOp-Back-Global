@@ -60,4 +60,9 @@ public class PrediccionDemandaController extends BaseControllerImpl<PrediccionDe
         return ResponseEntity.ok(prediccionDemandaList);
     }
 
+    @PutMapping("/error")
+    public ResponseEntity<?> medirError(@RequestBody ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception {
+        prediccionDemandaService.calculoError(parametrosPrediccionDTO);
+        return ResponseEntity.ok().build();
+    }
 }

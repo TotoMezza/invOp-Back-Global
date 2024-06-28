@@ -18,7 +18,7 @@ public class DetalleOrdenCompra extends EntidadBase{
     @Column(name = "cantidad")
     private Integer cantidadOCD;
 
-    @ManyToOne( fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "id_Articulo")
     private Articulo articulo;
 

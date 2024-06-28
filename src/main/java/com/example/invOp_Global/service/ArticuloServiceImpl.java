@@ -6,6 +6,7 @@ import com.example.invOp_Global.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLOutput;
@@ -65,25 +66,14 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
 
     @Override
     @Transactional
+    @Modifying
     public boolean darBajaArticulo(Long idArticulo) throws Exception {
         Articulo articulo = articuloRepository.findById(idArticulo).orElseThrow(() -> new Exception("Artículo no encontrado"));
         List<OrdenCompra> ordenesPendientes = ordenCompraRepository.findOrdenCompraByEstadoAndArticulo("PENDIENTE", idArticulo);
         List<OrdenCompra> ordenesEnCurso = ordenCompraRepository.findOrdenCompraByEstadoAndArticulo("EN-CURSO", idArticulo);
-        if (!ordenesPendientes.isEmpty() && !ordenesEnCurso.isEmpty() )  {
+        if (!ordenesPendientes.isEmpty() && !ordenesEnCurso.isEmpty()) {
             throw new Exception("El artículo no se puede dar de baja porque tiene órdenes de compra pendientes");
         }
-        List<DetalleOrdenCompra> detalles = detalleOCService.findDetalleOCByArticulo(idArticulo);
-        for (DetalleOrdenCompra detalle : detalles) {
-            detalleOCRepository.delete(detalle);
-        }
-        ;
-        List<ProveedorArticulo> proveedorArticulos = proveedorArticuloService.findProveedoresByArticulo(idArticulo);
-        for( ProveedorArticulo linea : proveedorArticulos){
-            Long idLinea = linea.getId();
-            proveedorArticuloService.delete(idLinea);
-        }
-
-
         baseRepository.deleteById(idArticulo);
         return true;
     }
@@ -145,7 +135,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         int demanda = demandaAnual(articuloId);
         Double tiempoDemora = proveedorArticuloService.findProveedorArticuloByArticuloAndProveedor(articulo.getId(),articulo.getProveedorPred().getId()).getTiempoDemora();
         Double demandaDiaria = (double)demanda/365;
-        int puntoPedido = (int)Math.ceil(demandaDiaria * tiempoDemora);
+        int puntoPedido = (int)Math.ceil(demandaDiaria * tiempoDemora)+articulo.getStockSeguridad();
         articulo.setPuntoPedido(puntoPedido);
         articuloRepository.save(articulo);
         return puntoPedido;
@@ -233,8 +223,8 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
     @Override
     public void modificarIntervaloFijo(Long articuloId) throws Exception{
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
-            articulo.setCantidadMaxima(null);
-            articulo.setCantidadAPedir(null);
+            articulo.setCantidadMaxima(0);
+            articulo.setCantidadAPedir(0);
             articulo.setModeloInventario(ModeloInventario.LOTE_FIJO);
             articuloRepository.save(articulo);
     }
@@ -242,8 +232,8 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
     @Override
     public void modificarLoteFijo(Long articuloId) throws Exception{
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
-            articulo.setLoteOptimo(null);
-            articulo.setPuntoPedido(null);
+            articulo.setLoteOptimo(0);
+            articulo.setPuntoPedido(0);
             articulo.setModeloInventario(ModeloInventario.INTERVALO_FIJO);
             articuloRepository.save(articulo);
     }

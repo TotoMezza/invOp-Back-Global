@@ -1,6 +1,8 @@
 package com.example.invOp_Global.repository;
 
 import com.example.invOp_Global.entities.ProveedorArticulo;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -35,4 +37,5 @@ public interface ProveedorArticuloRepository extends BaseRepository<ProveedorArt
                     "WHERE pa.id_proveedor = :proveedorId AND pa.id_articulo = :articuloId;", nativeQuery = true
     )
     ProveedorArticulo findProveedorArticuloByProveedorAndArticulo(@Param(value = "proveedorId") Long proveedorId, @Param(value = "articuloId") Long articuloId);
+
 }

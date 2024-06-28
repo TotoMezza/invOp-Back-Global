@@ -28,7 +28,6 @@ public class OrdenCompra extends EntidadBase{
     @Column(name = "total_oc")
     private  double totalOrdenCompra;
 
-
     @Column(name = "estado_oc")
     @Enumerated(EnumType.STRING)
     private EstadoOrdenCompra estadoOrdenCompra;
@@ -38,7 +37,7 @@ public class OrdenCompra extends EntidadBase{
     @JoinColumn(name = "id_proveedor")
     private Proveedor proveedor;
 
-    @NotNull
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     @JoinColumn(name ="id_OrdenCompra")

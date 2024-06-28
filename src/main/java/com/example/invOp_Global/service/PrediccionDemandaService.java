@@ -23,5 +23,9 @@ public interface PrediccionDemandaService extends BaseService<PrediccionDemanda,
     List<PrediccionDemanda> crearPrediccion(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception;
 
     List<PrediccionDemanda> crearPrediccionPredeterminada(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception;
+
+    void calculoError(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception;
+
+    void calcularError(ParametrosPrediccionDTO parametrosPrediccionDTO, int contador) throws Exception;
 }
 

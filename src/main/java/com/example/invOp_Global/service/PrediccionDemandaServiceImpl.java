@@ -97,44 +97,44 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
         }
     }
 
-    public Integer calcularPMMesAnterior(Long idArticulo, LocalDate fechaPrediccion) throws Exception{
-        try{
+    public Integer calcularPMMesAnterior(Long idArticulo, LocalDate fechaPrediccion) throws Exception {
+        try {
             LocalDate fechaDesde = fechaPrediccion.minusMonths(12).withDayOfMonth(1);
             LocalDate fechaHasta = fechaPrediccion.minusMonths(1).withDayOfMonth(fechaPrediccion.minusMonths(1).lengthOfMonth());
             int demanda = demandaService.calcularDemanda(fechaDesde, fechaHasta, idArticulo);
-            if(demanda <0){
+            if (demanda < 0) {
                 demanda = 0;
             }
-            Integer valorPrediccion = demanda/12;
+            Integer valorPrediccion = demanda / 12;
             return valorPrediccion;
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
 
     @Override
-    public Integer calculoPMPSuavizado(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception{
-        try{
+    public Integer calculoPMPSuavizado(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception {
+        try {
             LocalDate fechaPrediccion = LocalDate.of(parametrosPrediccionDTO.getAnioPrediccion(), parametrosPrediccionDTO.getMesPrediccion(), 1);
             LocalDate fechaDesde = fechaPrediccion.minusMonths(1).withDayOfMonth(1);
             LocalDate fechaHasta = fechaPrediccion.minusMonths(1).withDayOfMonth(fechaPrediccion.minusMonths(1).lengthOfMonth());
             int demandaMesAnterior = demandaService.calcularDemanda(fechaDesde, fechaHasta, parametrosPrediccionDTO.getArticuloId());
-            if (demandaMesAnterior <= 0){
+            if (demandaMesAnterior <= 0) {
                 int anio = fechaDesde.getYear();
                 int mes = fechaDesde.getMonthValue();
                 PrediccionDemanda prediccionMesAnterior = prediccionDemandaRepository.prediccionPorArticuloAndFechas(parametrosPrediccionDTO.getArticuloId(), anio, mes);
-                if(!prediccionMesAnterior.equals(null)){
+                if (!prediccionMesAnterior.equals(null)) {
                     demandaMesAnterior = prediccionMesAnterior.getValorPrediccion();
-                } else{
+                } else {
                     demandaMesAnterior = 0;
                 }
             }
             Double alfa = parametrosPrediccionDTO.getAlfa();
             Integer valorPrediccionMesAnterior = calcularPMMesAnterior(parametrosPrediccionDTO.getArticuloId(), fechaPrediccion.minusMonths(1));
-            Integer valorPrediccion = (int)(valorPrediccionMesAnterior + (alfa * (demandaMesAnterior - valorPrediccionMesAnterior)));
+            Integer valorPrediccion = (int) (valorPrediccionMesAnterior + (alfa * (demandaMesAnterior - valorPrediccionMesAnterior)));
             return valorPrediccion;
 
-        }catch(Exception e){
+        } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
@@ -200,7 +200,7 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
             double sumaX2 = 0.0;
             double a = 0.0;
             double b = 0.0;
-            LocalDate fechaPrediccion = LocalDate.of(parametrosPrediccionDTO.getAnioPrediccion(),parametrosPrediccionDTO.getMesPrediccion(), 1);
+            LocalDate fechaPrediccion = LocalDate.of(parametrosPrediccionDTO.getAnioPrediccion(), parametrosPrediccionDTO.getMesPrediccion(), 1);
 
             for (int i = 0; i < cantidadPeriodosAUsar; i++) {
                 LocalDate fechaDesde = fechaPrediccion.minusMonths(i + 1).withDayOfMonth(1);
@@ -246,7 +246,7 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
         try {
             Articulo articulo = articuloService.findById(parametrosPrediccionDTO.getArticuloId());
             List<PrediccionDemanda> listaPredicciones = new ArrayList<>();
-            LocalDate fechaInicial = LocalDate.of(parametrosPrediccionDTO.getAnioPrediccion(),parametrosPrediccionDTO.getMesPrediccion(), 1);
+            LocalDate fechaInicial = LocalDate.of(parametrosPrediccionDTO.getAnioPrediccion(), parametrosPrediccionDTO.getMesPrediccion(), 1);
             for (int i = 0; i < parametrosPrediccionDTO.getCantidadPeriodosAPredecir(); i++) {
                 int valorPrediccion = 0;
                 switch (parametrosPrediccionDTO.getMetodoPrediccion()) {
@@ -285,7 +285,7 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
         try {
             Articulo articulo = articuloService.findById(parametrosPrediccionDTO.getArticuloId());
             List<PrediccionDemanda> listaPredicciones = new ArrayList<>();
-            LocalDate fechaInicial = LocalDate.of(parametrosPrediccionDTO.getAnioPrediccion(),parametrosPrediccionDTO.getMesPrediccion(), 1);
+            LocalDate fechaInicial = LocalDate.of(parametrosPrediccionDTO.getAnioPrediccion(), parametrosPrediccionDTO.getMesPrediccion(), 1);
             for (int i = 0; i < parametrosPrediccionDTO.getCantidadPeriodosAPredecir(); i++) {
                 int valorPrediccion = 0;
                 switch (articulo.getMetodoPred()) {
@@ -319,9 +319,86 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
         }
     }
 
-    public void calcularMetodoPredeterminado(ParametrosPrediccionDTO parametrosPrediccionDTO){
-        Articulo articulo = articuloService.findById(parametrosPrediccionDTO.getArticuloId());
 
+
+    @Override
+    public void calculoError(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception {
+      int contador = 1;
+            for(int k=0; k<contador; k++){
+                calcularError(parametrosPrediccionDTO, k);
+            }
+    }
+
+
+    @Override
+    public void calcularError(ParametrosPrediccionDTO parametrosPrediccionDTO, int contador) throws Exception {
+        try{
+            Long idArticulo= parametrosPrediccionDTO.getArticuloId();
+            Articulo articulo = articuloService.findById(idArticulo);
+            int anioAPredecir= parametrosPrediccionDTO.getAnioPrediccion();
+            int mesAPredecir=parametrosPrediccionDTO.getMesPrediccion();
+            double prediccionPMP= calculoPMPonderado(parametrosPrediccionDTO);
+            double prediccionPMSE= calculoPMPSuavizado(parametrosPrediccionDTO);
+            double prediccionEST= calculoPEstacional(parametrosPrediccionDTO);
+
+            //calculo del error
+            LocalDate inicioPeriodo = LocalDate.of(anioAPredecir, mesAPredecir, 1);
+            LocalDate finPeriodo = inicioPeriodo.withDayOfMonth(inicioPeriodo.lengthOfMonth());
+
+            Date fechaDesdeDate = java.sql.Date.valueOf(inicioPeriodo);
+            Date fechaHastaDate = java.sql.Date.valueOf(finPeriodo);
+
+            int demandaReal = articuloService.demandaAnual(idArticulo);
+
+            if(mesAPredecir <12) {
+                mesAPredecir+= 1;
+                parametrosPrediccionDTO.setMesPrediccion(mesAPredecir);
+            } else {
+                anioAPredecir+=1;
+                mesAPredecir=1;
+                parametrosPrediccionDTO.setMesPrediccion(mesAPredecir);
+                parametrosPrediccionDTO.setAnioPrediccion(anioAPredecir);
+            }
+
+            if (demandaReal<=0){
+                throw new Exception("No esta cargada la demanda necesaria para predecir ");
+            }
+
+            double errorPMP= prediccionPMP- demandaReal;
+            double errorPMSE= prediccionPMSE- demandaReal;
+            double errorEST= prediccionEST- demandaReal;
+
+            //porcentaje de error
+            double porcentajeDeErrorPMP = Math.abs(errorPMP / demandaReal) * 100;
+            double porcentajeDeErrorPMSE = Math.abs(errorPMSE / demandaReal) * 100;
+            double porcentajeDeErrorEST = Math.abs(errorEST / demandaReal) * 100;
+
+            if(errorPMP<errorPMSE){
+                if(errorPMP<errorEST){
+                    parametrosPrediccionDTO.setError(errorPMP);
+                    parametrosPrediccionDTO.setPorcentajeDeError(porcentajeDeErrorPMP);
+                    parametrosPrediccionDTO.setPrediccion(prediccionPMP);
+                    articulo.setMetodoPred(MetodoPrediccion.PROMEDIO_MOVIL_PONDERADO);
+                    articuloRepository.save(articulo);
+                } else {
+                    parametrosPrediccionDTO.setError(errorEST);
+                    parametrosPrediccionDTO.setPorcentajeDeError(porcentajeDeErrorEST);
+                    parametrosPrediccionDTO.setPrediccion(prediccionEST);
+                    articulo.setMetodoPred(MetodoPrediccion.PROMEDIO_MOVIL_SUAVIZADO);
+                    articuloRepository.save(articulo);
+                }
+            } else {
+                parametrosPrediccionDTO.setError(errorPMSE);
+                parametrosPrediccionDTO.setPorcentajeDeError(porcentajeDeErrorPMSE);
+                parametrosPrediccionDTO.setPrediccion(prediccionPMSE);
+                articulo.setMetodoPred(MetodoPrediccion.ESTACIONALIDAD);
+                articuloRepository.save(articulo);
+            }
+
+
+        }catch (Exception e){
+            throw new Exception("Error al calcular la predicción de demanda: " + e.getMessage());
+        }
     }
 
 }
