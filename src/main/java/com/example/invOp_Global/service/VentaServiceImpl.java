@@ -5,6 +5,7 @@ import com.example.invOp_Global.entities.Articulo;
 import com.example.invOp_Global.entities.OrdenCompra;
 import com.example.invOp_Global.entities.Venta;
 import com.example.invOp_Global.entities.VentaDetalle;
+import com.example.invOp_Global.enums.ModeloInventario;
 import com.example.invOp_Global.repository.ArticuloRepository;
 import com.example.invOp_Global.repository.BaseRepository;
 import com.example.invOp_Global.repository.VentaRepository;
@@ -62,10 +63,17 @@ public class VentaServiceImpl extends BaseServiceImpl<Venta, Long> implements Ve
             ventaDetalle.setSubtotal(detalleVenta.getCantidad()*articulo.getPrecio());
             nuevaVenta.AgregarDetalleVenta(ventaDetalle);
             articuloService.disminuirStock(articulo, detalleVenta.getCantidad());
+            if(articulo.getModeloInventario() == ModeloInventario.LOTE_FIJO){
+                if (articulo.getStockActual() <= articulo.getPuntoPedido()){
+                    OrdenCompra ordenCompra = ordenCompraService.crearOrdenCompra(articulo);
+                }
+            } else if (articulo.getModeloInventario() == ModeloInventario.INTERVALO_FIJO) {
+                if (articulo.getStockActual() <= 2){
+                    OrdenCompra ordenCompra = ordenCompraService.crearOrdenCompraIF(articulo);
+                }
 
-            if (articulo.getStockActual() <= articulo.getPuntoPedido()){
-                OrdenCompra ordenCompra = ordenCompraService.crearOrdenCompra(articulo);
             }
+
 
         }
         Double total = 0.0;

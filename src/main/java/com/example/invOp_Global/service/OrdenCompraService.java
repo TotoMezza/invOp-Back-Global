@@ -20,6 +20,9 @@ public interface OrdenCompraService extends BaseService<OrdenCompra,Long>{
     @Transactional
     OrdenCompra crearOrdenCompra(Articulo articulo);
 
+    @Transactional
+    OrdenCompra crearOrdenCompraIF(Articulo articulo);
+
     void modificarOC(ModificarOCDto modificarOCDto) throws Exception;
 
     @Transactional

@@ -95,6 +95,28 @@ public class OrdenCompraServiceImpl extends BaseServiceImpl<OrdenCompra,Long> im
     }
 
     @Override
+    @Transactional
+    public OrdenCompra crearOrdenCompraIF(Articulo articulo) {
+        OrdenCompra ordenCompra = new OrdenCompra();
+        ordenCompra.setFechaOrdenCompra(LocalDate.now());
+        ordenCompra.setProveedor(articulo.getProveedorPred());
+
+        DetalleOrdenCompra detalleOC = new DetalleOrdenCompra();
+        detalleOC.setArticulo(articulo);
+        detalleOC.setCantidadOCD(articulo.getCantidadAPedir());
+        detalleOC.setSubtotal(articulo.getPrecio() * detalleOC.getCantidadOCD());
+
+        List <DetalleOrdenCompra> detallesOrdenCompras = new ArrayList<>();
+        detallesOrdenCompras.add(detalleOC);
+        ordenCompra.setTotalOrdenCompra(detalleOC.getSubtotal());
+        ordenCompra.setDetallesOC(detallesOrdenCompras);
+        ordenCompra.setEstadoOrdenCompra(EstadoOrdenCompra.PENDIENTE);
+
+        ordenCompraRepository.save(ordenCompra);
+        return ordenCompra;
+    }
+
+    @Override
     public void modificarOC(ModificarOCDto modificarOCDto) throws Exception{
         OrdenCompra ordenCompra = ordenCompraRepository.findById(modificarOCDto.getOrdenCompraId())
                 .orElseThrow(()-> new Exception("OrdenCompra no encontrada"));

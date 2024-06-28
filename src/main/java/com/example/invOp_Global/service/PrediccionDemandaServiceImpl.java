@@ -323,10 +323,7 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
 
     @Override
     public void calculoError(ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception {
-      int contador = 1;
-            for(int k=0; k<contador; k++){
-                calcularError(parametrosPrediccionDTO, k);
-            }
+                calcularError(parametrosPrediccionDTO, 1);
     }
 
 
