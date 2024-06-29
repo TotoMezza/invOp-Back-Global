@@ -1,5 +1,6 @@
 package com.example.invOp_Global.controllers;
 
+import com.example.invOp_Global.dtos.CrearArticuloDTO;
 import com.example.invOp_Global.dtos.FaltanteDto;
 import com.example.invOp_Global.dtos.ReponerDto;
 import com.example.invOp_Global.entities.Articulo;
@@ -88,5 +89,11 @@ public class ArticuloController extends BaseControllerImpl<Articulo, ArticuloSer
     public ResponseEntity<?> calcularAtributos(@PathVariable Long id) throws Exception {
         articuloService.calcularTodo(id);
         return ResponseEntity.status(HttpStatus.OK).body("{Los calculos se han realizado de manera correcta}");
+    }
+
+    @PostMapping("/crear")
+    public ResponseEntity<Articulo> crearArticulo(@RequestBody CrearArticuloDTO crearArticuloDTO) throws Exception{
+        Articulo articulo = articuloService.crearArticulo(crearArticuloDTO);
+        return ResponseEntity.ok(articulo);
     }
 }

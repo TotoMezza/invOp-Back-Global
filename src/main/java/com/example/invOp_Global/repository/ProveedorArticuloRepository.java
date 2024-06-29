@@ -36,6 +36,6 @@ public interface ProveedorArticuloRepository extends BaseRepository<ProveedorArt
     @Query(value = "SELECT * FROM proveedor_articulo as pa " +
                     "WHERE pa.id_proveedor = :proveedorId AND pa.id_articulo = :articuloId;", nativeQuery = true
     )
-    ProveedorArticulo findProveedorArticuloByProveedorAndArticulo(@Param(value = "proveedorId") Long proveedorId, @Param(value = "articuloId") Long articuloId);
+    ProveedorArticulo findProveedorArticuloByProveedorAndArticulo(@PathVariable(value = "proveedorId") Long proveedorId, @PathVariable(value = "articuloId") Long articuloId);
 
 }

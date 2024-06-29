@@ -1,5 +1,6 @@
 package com.example.invOp_Global.service;
 
+import com.example.invOp_Global.dtos.CrearPADTO;
 import com.example.invOp_Global.entities.ProveedorArticulo;
 
 import java.util.List;
@@ -8,4 +9,6 @@ public interface ProveedorArticuloService extends BaseService<ProveedorArticulo,
     public List<ProveedorArticulo> findProveedoresByArticulo(Long articuloId) throws Exception;
     public List<ProveedorArticulo> findArticulosByProveedor(Long proveedor_id);
     public ProveedorArticulo findProveedorArticuloByArticuloAndProveedor(Long proveedorId, Long articuloId);
+
+    ProveedorArticulo crearPA(CrearPADTO crearPADTO) throws Exception;
 }

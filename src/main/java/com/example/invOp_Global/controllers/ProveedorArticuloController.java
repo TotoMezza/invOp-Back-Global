@@ -1,5 +1,6 @@
 package com.example.invOp_Global.controllers;
 
+import com.example.invOp_Global.dtos.CrearPADTO;
 import com.example.invOp_Global.entities.ProveedorArticulo;
 import com.example.invOp_Global.service.ProveedorArticuloServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class ProveedorArticuloController extends BaseControllerImpl<ProveedorArt
     }
 
     @GetMapping("/findProveedorArticuloByArticuloAndProveedor")
-    public ResponseEntity<?> findProveedorArticuloByArticuloAndProveedor(@RequestParam Long proveedorId, @RequestParam Long articuloId) {
+    public ResponseEntity<?> findProveedorArticuloByArticuloAndProveedor(@PathVariable Long proveedorId, @PathVariable Long articuloId) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(servicio.findProveedorArticuloByArticuloAndProveedor(proveedorId, articuloId));
         } catch (Exception e) {
@@ -42,5 +43,10 @@ public class ProveedorArticuloController extends BaseControllerImpl<ProveedorArt
         }
     }
 
+    @PostMapping("/crear")
+    public ResponseEntity<?> crearPA (@RequestBody CrearPADTO crearPADTO) throws Exception {
+        proveedorArticuloService.crearPA(crearPADTO);
+        return ResponseEntity.ok().build();
+    }
 }
 

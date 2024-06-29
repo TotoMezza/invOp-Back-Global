@@ -1,16 +1,19 @@
 package com.example.invOp_Global.service;
 
+import com.example.invOp_Global.dtos.CrearArticuloDTO;
 import com.example.invOp_Global.entities.Articulo;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
 
 public interface ArticuloService extends BaseService<Articulo,Long>{
+
+    Articulo crearArticulo(CrearArticuloDTO crearArticuloDTO) throws Exception;
+
     public Articulo findById(Long id);
 
     public  void disminuirStock(Articulo articulo, Integer cantVendida);
 
-    @Transactional
     boolean darBajaArticulo(Long idArticulo) throws Exception;
 
     List<Articulo> listadoFaltantes();
@@ -35,13 +38,10 @@ public interface ArticuloService extends BaseService<Articulo,Long>{
 
     void calculosIntervaloFijo(Long articuloId) throws Exception;
 
-    void modificarIntervaloFijo(Long articuloId) throws Exception;
-
-    void modificarLoteFijo(Long articuloId) throws Exception;
-
     void modificarModeloInventario(Long articuloId) throws Exception;
 
     void modificarValoresProveedor(Long proveedorId, Long articuloId) throws Exception;
 
     void calcularTodo(Long articuloId) throws Exception;
+
 }
