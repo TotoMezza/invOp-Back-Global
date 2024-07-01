@@ -2,6 +2,7 @@ package com.example.invOp_Global.service;
 
 import com.example.invOp_Global.dtos.CrearArticuloDTO;
 import com.example.invOp_Global.entities.Articulo;
+import com.example.invOp_Global.entities.VentaDetalle;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public interface ArticuloService extends BaseService<Articulo,Long>{
     public Articulo findById(Long id);
 
     public  void disminuirStock(Articulo articulo, Integer cantVendida);
+
+    List<VentaDetalle> findDetalleVentaArticulo(Long idArticulo);
 
     boolean darBajaArticulo(Long idArticulo) throws Exception;
 

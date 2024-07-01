@@ -1,6 +1,7 @@
 package com.example.invOp_Global.repository;
 
 import com.example.invOp_Global.entities.Articulo;
+import com.example.invOp_Global.entities.VentaDetalle;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -65,11 +66,20 @@ public interface ArticuloRepository extends BaseRepository<Articulo,Long>{
     @Transactional
     @Query(
             value = "DELETE " +
-                    "FROM venta_detalles " +
+                    "FROM `venta-detalles` " +
                     "WHERE id_Articulo = :idArticulo ",
             nativeQuery = true
     )
     int deleteDetallesByVenta(@Param("idArticulo") Long idArticulo);
+
+    @Modifying
+    @Transactional
+    @Query(
+            value = "SELECT * FROM `venta-detalles` vd WHERE vd.id_Articulo = :idArticulo",
+            nativeQuery = true
+    )
+    List<VentaDetalle> findDetalleVentaArticulo(@Param("idArticulo") Long idArticulo);
+
 
 
 

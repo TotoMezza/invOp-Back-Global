@@ -1,6 +1,8 @@
 package com.example.invOp_Global.repository;
 
+import com.example.invOp_Global.entities.DetalleOrdenCompra;
 import com.example.invOp_Global.entities.OrdenCompra;
+import com.example.invOp_Global.entities.VentaDetalle;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -21,4 +23,6 @@ public interface OrdenCompraRepository extends BaseRepository<OrdenCompra,Long> 
             nativeQuery = true
     )
     List<OrdenCompra> findOrdenCompraByEstadoAndArticulo(@Param("estado")String estado, @Param("articuloId") Long articuloId);
+
+
 }
