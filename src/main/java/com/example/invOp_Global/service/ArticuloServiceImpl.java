@@ -62,6 +62,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
             articulo.setStockActual(crearArticuloDTO.getStockActual());
             articulo.setModeloInventario(crearArticuloDTO.getModeloInventario());
             articulo.setTiempoRevision(crearArticuloDTO.getTiempoRevision());
+            articulo.setPrecio(crearArticuloDTO.getPrecio());
 
 
         Proveedor proveedor = proveedorRepository.findById(crearArticuloDTO.getIdProveedorPred()).orElseThrow();

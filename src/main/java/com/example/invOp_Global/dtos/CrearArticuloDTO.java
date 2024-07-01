@@ -20,4 +20,6 @@ public class CrearArticuloDTO {
 
     private Long idProveedorPred;
 
+    private  double precio;
+
 }
