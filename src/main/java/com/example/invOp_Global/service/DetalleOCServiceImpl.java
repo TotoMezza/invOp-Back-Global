@@ -25,6 +25,11 @@ public class DetalleOCServiceImpl extends BaseServiceImpl<DetalleOrdenCompra,Lon
         return buscarDetalle;
     }
 
+    @Override
+    public List<DetalleOrdenCompra> findDetallesOC(Long ordenCompraId){
+        return detalleOCRepository.findDetallesOC(ordenCompraId);
+    }
+
 
 
 

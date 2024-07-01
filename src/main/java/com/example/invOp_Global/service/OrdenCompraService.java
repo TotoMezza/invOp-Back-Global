@@ -3,6 +3,7 @@ package com.example.invOp_Global.service;
 import com.example.invOp_Global.dtos.CrearOCDto;
 import com.example.invOp_Global.dtos.ModificarOCDto;
 import com.example.invOp_Global.entities.Articulo;
+import com.example.invOp_Global.entities.DetalleOrdenCompra;
 import com.example.invOp_Global.entities.OrdenCompra;
 import jakarta.transaction.Transactional;
 

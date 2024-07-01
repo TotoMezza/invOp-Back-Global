@@ -58,18 +58,32 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
 
         Articulo articulo = new Articulo();
 
-            articulo.setNombre(crearArticuloDTO.getNombre());
-            articulo.setStockActual(crearArticuloDTO.getStockActual());
-            articulo.setModeloInventario(crearArticuloDTO.getModeloInventario());
-            articulo.setTiempoRevision(crearArticuloDTO.getTiempoRevision());
-            articulo.setPrecio(crearArticuloDTO.getPrecio());
-
+        articulo.setNombre(crearArticuloDTO.getNombre());
+        articulo.setStockActual(crearArticuloDTO.getStockActual());
+        articulo.setModeloInventario(crearArticuloDTO.getModeloInventario());
+        articulo.setTiempoRevision(crearArticuloDTO.getTiempoRevision());
 
         Proveedor proveedor = proveedorRepository.findById(crearArticuloDTO.getIdProveedorPred()).orElseThrow();
 
         articulo.setProveedorPred(proveedor);
+        articuloRepository.save(articulo);
 
-        return articuloRepository.save(articulo);
+        ProveedorArticulo proveedorArticulo = new ProveedorArticulo();
+        proveedorArticulo.setArticulo(articulo);
+        proveedorArticulo.setProveedor(proveedor);
+        proveedorArticulo.setPrecioArticuloProveedor(crearArticuloDTO.getPrecioArticuloProveedor());
+        proveedorArticulo.setCostoPedido(crearArticuloDTO.getCostoPedido());
+        proveedorArticulo.setCostoAlmacenamiento(crearArticuloDTO.getCostoAlmacenamiento());
+        proveedorArticulo.setTiempoDemora(crearArticuloDTO.getTiempoDemora());
+        proveedorArticuloRepository.save(proveedorArticulo);
+
+
+        modificarValoresProveedor(proveedorArticulo.getProveedor().getId(), articulo.getId());
+
+        calcularTodo(articulo.getId());
+        articuloRepository.save(articulo);
+
+        return articulo;
     }
 
     @Override
@@ -100,13 +114,11 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         if (!ordenesPendientes.isEmpty() && !ordenesEnCurso.isEmpty()) {
             throw new Exception("El artículo no se puede dar de baja porque tiene órdenes de compra pendientes");
         }
-
         List <VentaDetalle> ventaDetallesArticulo=articuloRepository.findDetalleVentaArticulo(articulo.getId());
 
         if(ventaDetallesArticulo.isEmpty()){
             baseRepository.deleteById(idArticulo);
         }
-
         articuloRepository.deleteDetallesByVenta(idArticulo);
         articuloRepository.deleteDetallesPorArticulo(idArticulo);
         articuloRepository.deletePrediccionesByArticulo(idArticulo);
@@ -173,11 +185,10 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         int demanda = demandaAnual(articuloId);
         Double tiempoDemora = proveedorArticuloRepository.findProveedorArticuloByProveedorAndArticulo(articulo.getProveedorPred().getId(),articulo.getId()).getTiempoDemora();
         Double demandaDiaria = (double)demanda/365;
-        int puntoPedido = (int)Math.ceil(demandaDiaria * tiempoDemora)+articulo.getStockSeguridad();
+        int puntoPedido = (int)Math.ceil(demandaDiaria * tiempoDemora)+ articulo.getStockSeguridad();
         articulo.setPuntoPedido(puntoPedido);
         articuloRepository.save(articulo);
         return puntoPedido;
-
     }
 
     @Override
@@ -311,7 +322,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
     @Override
     public void calcularTodo(Long articuloId) throws Exception {
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
-
+        articulo.setStockSeguridad(calcularStockSeguridad(articuloId));
         if(articulo.getModeloInventario() == ModeloInventario.LOTE_FIJO){
             articulo.setPuntoPedido(calculoPuntoPedido(articuloId));
             articulo.setLoteOptimo(calculoLoteOptimo(articuloId));
@@ -321,9 +332,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
             articulo.setCantidadAPedir(calculoCantAPedir(articuloId));
         }
         articulo.setDemandaAnual(demandaAnual(articuloId));
-        articulo.setStockSeguridad(calcularStockSeguridad(articuloId));
         articulo.setCgi(calculoCGI(articuloId));
-
         articuloRepository.save(articulo);
     }
 

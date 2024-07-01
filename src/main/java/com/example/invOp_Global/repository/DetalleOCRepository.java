@@ -14,4 +14,10 @@ public interface DetalleOCRepository extends BaseRepository<DetalleOrdenCompra,L
             nativeQuery = true
     )
     List<DetalleOrdenCompra> findDetalleOCByArticulo(@Param("articuloId") Long articuloId);
+
+    @Query(
+            value = "SELECT * FROM ordencompradetalle WHERE id_orden_compra =:ordenCompraId",
+            nativeQuery = true
+    )
+    List<DetalleOrdenCompra> findDetallesOC(@Param("ordenCompraId") Long ordenCompraId);
 }

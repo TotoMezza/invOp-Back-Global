@@ -20,6 +20,12 @@ public class CrearArticuloDTO {
 
     private Long idProveedorPred;
 
-    private  double precio;
+    private Double tiempoDemora;
+
+    private Double costoAlmacenamiento;
+
+    private Double costoPedido;
+
+    private Double precioArticuloProveedor;
 
 }

@@ -8,4 +8,6 @@ import java.util.List;
 public interface DetalleOCService extends BaseService<DetalleOrdenCompra,Long>{
     @Transactional
     List<DetalleOrdenCompra> findDetalleOCByArticulo(Long articulo_id);
+
+    List<DetalleOrdenCompra> findDetallesOC(Long ordenCompraId);
 }

@@ -87,9 +87,15 @@ public class ArticuloController extends BaseControllerImpl<Articulo, ArticuloSer
     }
     @PutMapping("/calculos/{id}")
     public ResponseEntity<?> calcularAtributos(@PathVariable Long id) throws Exception {
-        articuloService.calcularTodo(id);
-        Articulo articulo= articuloService.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(articulo);
+        try{
+            articuloService.calcularTodo(id);
+            Articulo articulo= articuloService.findById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(articulo);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error inesperado: " + e.getMessage());
+        }
+
+
     }
 
     @PostMapping("/crear")
