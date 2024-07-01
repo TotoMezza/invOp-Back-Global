@@ -88,7 +88,8 @@ public class ArticuloController extends BaseControllerImpl<Articulo, ArticuloSer
     @PutMapping("/calculos/{id}")
     public ResponseEntity<?> calcularAtributos(@PathVariable Long id) throws Exception {
         articuloService.calcularTodo(id);
-        return ResponseEntity.status(HttpStatus.OK).body("{Los calculos se han realizado de manera correcta}");
+        Articulo articulo= articuloService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(articulo);
     }
 
     @PostMapping("/crear")

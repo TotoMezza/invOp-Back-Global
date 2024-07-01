@@ -86,6 +86,11 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
     }
 
     @Override
+    public List<VentaDetalle> findDetalleVentaArticulo(Long idArticulo){
+        return articuloRepository.findDetalleVentaArticulo(idArticulo);
+    }
+
+    @Override
     @Transactional
     @Modifying
     public boolean darBajaArticulo(Long idArticulo) throws Exception {
@@ -95,6 +100,13 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         if (!ordenesPendientes.isEmpty() && !ordenesEnCurso.isEmpty()) {
             throw new Exception("El artículo no se puede dar de baja porque tiene órdenes de compra pendientes");
         }
+
+        List <VentaDetalle> ventaDetallesArticulo=articuloRepository.findDetalleVentaArticulo(articulo.getId());
+
+        if(ventaDetallesArticulo.isEmpty()){
+            baseRepository.deleteById(idArticulo);
+        }
+
         articuloRepository.deleteDetallesByVenta(idArticulo);
         articuloRepository.deleteDetallesPorArticulo(idArticulo);
         articuloRepository.deletePrediccionesByArticulo(idArticulo);
