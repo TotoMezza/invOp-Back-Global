@@ -44,7 +44,7 @@ public class VentaController extends BaseControllerImpl<Venta, VentaServiceImpl>
     public ResponseEntity<Venta> nuevaVenta(@RequestBody List<DetalleVentaDto> detalleVentaDto) throws Exception {
         try {
             Venta venta = ventaService.nuevaVenta(detalleVentaDto);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return ResponseEntity.ok(venta);
         }catch (Exception e){
             HttpHeaders headers = new HttpHeaders();
             headers.add("Error-Message", e.getMessage());
