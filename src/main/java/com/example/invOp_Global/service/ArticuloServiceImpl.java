@@ -170,9 +170,20 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
     @Override
     public Integer calculoLoteOptimo(Long articuloId) throws Exception {
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
+        Long idProvPred=articulo.getProveedorPred().getId();
+        ProveedorArticulo proveedorArticulo=proveedorArticuloRepository.
+                findProveedorArticuloByProveedorAndArticulo(idProvPred, articuloId);
         int demanda = demandaAnual(articuloId);
         Double costoP = articulo.getCostoPedido();
+        if(costoP==0){
+            costoP= proveedorArticulo.getCostoPedido();
+            articulo.setCostoPedido(costoP);
+        }
         Double costoA = articulo.getCostoAlmacenamiento();
+        if (costoA==0){
+            costoA = proveedorArticulo.getCostoAlmacenamiento();
+            articulo.setCostoAlmacenamiento(costoA);
+        }
         int loteOptimo = (int)Math.sqrt((2 * demanda * costoP) / costoA);
         articulo.setLoteOptimo(loteOptimo);
         articuloRepository.save(articulo);
@@ -184,13 +195,15 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         Articulo articulo = articuloRepository.findById(articuloId).orElseThrow(() -> new Exception("Artículo no encontrado"));
         Double precioArticulo = proveedorArticuloRepository.findProveedorArticuloByProveedorAndArticulo(articulo.getProveedorPred().getId(),articulo.getId()).getPrecioArticuloProveedor();
         Integer cantidadCompra = 0;
+
         if(articulo.getModeloInventario() == ModeloInventario.LOTE_FIJO){
             cantidadCompra = articulo.getLoteOptimo();
         } else {
             cantidadCompra = articulo.getCantidadAPedir();
         }
         double costoCompra = precioArticulo * cantidadCompra;
-        Double cgi = costoCompra + articulo.getCostoPedido() * (articulo.getDemandaAnual()/2) + articulo.getCostoAlmacenamiento() * (cantidadCompra/2);
+        Double cgi = costoCompra + articulo.getCostoPedido() * (articulo.getDemandaAnual()/2) +
+                articulo.getCostoAlmacenamiento() * (cantidadCompra/2);
         articulo.setCgi(cgi);
         articuloRepository.save(articulo);
         return cgi;
@@ -297,6 +310,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         articulo.setDemandaAnual(demandaAnual(articuloId));
         articulo.setStockSeguridad(calcularStockSeguridad(articuloId));
         articulo.setCgi(calculoCGI(articuloId));
+
         articuloRepository.save(articulo);
     }
 

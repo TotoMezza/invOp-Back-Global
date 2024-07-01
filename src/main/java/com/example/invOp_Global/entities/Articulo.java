@@ -16,7 +16,7 @@ import static com.example.invOp_Global.enums.ModeloInventario.LOTE_FIJO;
 @Getter
 @Setter
 @Builder
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
 public class Articulo extends EntidadBase {
 
