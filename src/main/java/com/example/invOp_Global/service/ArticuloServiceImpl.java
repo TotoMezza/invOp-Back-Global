@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implements ArticuloService {
 
     @Autowired
@@ -98,6 +97,11 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         Integer stockModificado = articulo.getStockActual() - cantVendida;
         articulo.setStockActual(stockModificado);
         articuloRepository.save(articulo);
+    }
+
+    @Override
+    public List<VentaDetalle> findDetalleVentaArticulo(Long idArticulo) {
+        return null;
     }
 
     @Override

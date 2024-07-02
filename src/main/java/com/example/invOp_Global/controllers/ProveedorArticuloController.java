@@ -26,7 +26,7 @@ public class ProveedorArticuloController extends BaseControllerImpl<ProveedorArt
     }
 
     @GetMapping("/findArticulosByProveedor/{proveedor_id}")
-    public ResponseEntity<?> findArticulosByProveedor(@RequestParam Long proveedor_id) {
+    public ResponseEntity<?> findArticulosByProveedor(@PathVariable Long proveedor_id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(servicio.findArticulosByProveedor(proveedor_id));
         } catch (Exception e) {
