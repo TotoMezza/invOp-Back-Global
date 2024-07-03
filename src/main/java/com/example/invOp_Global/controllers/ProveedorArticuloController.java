@@ -45,8 +45,12 @@ public class ProveedorArticuloController extends BaseControllerImpl<ProveedorArt
 
     @PostMapping("/crear")
     public ResponseEntity<?> crearPA (@RequestBody CrearPADTO crearPADTO) throws Exception {
-        proveedorArticuloService.crearPA(crearPADTO);
-        return ResponseEntity.ok().build();
+        try{
+            ProveedorArticulo provArt= proveedorArticuloService.crearPA(crearPADTO);
+            return ResponseEntity.ok(provArt);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }
 
