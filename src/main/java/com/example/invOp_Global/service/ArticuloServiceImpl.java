@@ -111,7 +111,7 @@ public class ArticuloServiceImpl extends BaseServiceImpl<Articulo,Long> implemen
         Articulo articulo = articuloRepository.findById(idArticulo).orElseThrow(() -> new Exception("Artículo no encontrado"));
         List<OrdenCompra> ordenesPendientes = ordenCompraRepository.findOrdenCompraByEstadoAndArticulo("PENDIENTE", idArticulo);
         List<OrdenCompra> ordenesEnCurso = ordenCompraRepository.findOrdenCompraByEstadoAndArticulo("EN-CURSO", idArticulo);
-        if (!ordenesPendientes.isEmpty() && !ordenesEnCurso.isEmpty()) {
+        if (!ordenesPendientes.isEmpty() || !ordenesEnCurso.isEmpty()) {
             throw new Exception("El artículo no se puede dar de baja porque tiene órdenes de compra pendientes");
         }
         articuloRepository.deleteDetallesByVenta(idArticulo);

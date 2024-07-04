@@ -5,6 +5,8 @@ import com.example.invOp_Global.entities.PrediccionDemanda;
 import com.example.invOp_Global.service.PrediccionDemandaService;
 import com.example.invOp_Global.service.PrediccionDemandaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,7 +64,12 @@ public class PrediccionDemandaController extends BaseControllerImpl<PrediccionDe
 
     @PutMapping("/error")
     public ResponseEntity<?> medirError(@RequestBody ParametrosPrediccionDTO parametrosPrediccionDTO) throws Exception {
-        prediccionDemandaService.calculoError(parametrosPrediccionDTO);
-        return ResponseEntity.ok().build();
+        try{
+            prediccionDemandaService.calculoError(parametrosPrediccionDTO);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
     }
 }

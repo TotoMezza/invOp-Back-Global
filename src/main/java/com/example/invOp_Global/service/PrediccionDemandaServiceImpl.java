@@ -79,12 +79,17 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
                 if (demanda <= 0) {
                     int anio = fechaDesde.getYear();
                     int mes = fechaDesde.getMonthValue();
-                    PrediccionDemanda prediccionMesAnterior = prediccionDemandaRepository.prediccionPorArticuloAndFechas(parametrosPrediccionDTO.getArticuloId(), anio, mes);
+
+                    int prediccionMesAnterior = 0;
+                    /*prediccionMesAnterior= prediccionDemandaRepository.prediccionPorArticuloAndFechas(parametrosPrediccionDTO.getArticuloId(), anio, mes);
                     if (prediccionMesAnterior != null) {
                         demanda = prediccionMesAnterior.getValorPrediccion();
                     } else {
                         demanda = 0;
+
                     }
+
+                     */
                 }
                 valoresPonderados = valoresPonderados + (factorPonderacion * demanda);
                 coeficientes = coeficientes + factorPonderacion;
@@ -122,15 +127,19 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
             if (demandaMesAnterior <= 0) {
                 int anio = fechaDesde.getYear();
                 int mes = fechaDesde.getMonthValue();
-                PrediccionDemanda prediccionMesAnterior = prediccionDemandaRepository.prediccionPorArticuloAndFechas(parametrosPrediccionDTO.getArticuloId(), anio, mes);
+                int prediccionMesAnterior=0;
+                /*PrediccionDemanda prediccionMesAnterior = prediccionDemandaRepository.prediccionPorArticuloAndFechas(parametrosPrediccionDTO.getArticuloId(), anio, mes);
                 if (!prediccionMesAnterior.equals(null)) {
                     demandaMesAnterior = prediccionMesAnterior.getValorPrediccion();
                 } else {
                     demandaMesAnterior = 0;
                 }
+
+                 */
             }
             Double alfa = parametrosPrediccionDTO.getAlfa();
             Integer valorPrediccionMesAnterior = calcularPMMesAnterior(parametrosPrediccionDTO.getArticuloId(), fechaPrediccion.minusMonths(1));
+            if(valorPrediccionMesAnterior ==null){ valorPrediccionMesAnterior=0;}
             Integer valorPrediccion = (int) (valorPrediccionMesAnterior + (alfa * (demandaMesAnterior - valorPrediccionMesAnterior)));
             return valorPrediccion;
 
@@ -212,13 +221,15 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
                 if (demandaHistoricaMes <= 0) {
                     int anio = fechaDesde.getYear();
                     int mes = fechaDesde.getMonthValue();
-
-                    PrediccionDemanda prediccionMesAnterior = prediccionDemandaRepository.prediccionPorArticuloAndFechas(parametrosPrediccionDTO.getArticuloId(), anio, mes);
+                    int prediccionMesAnterior=0;
+                    /*PrediccionDemanda prediccionMesAnterior = prediccionDemandaRepository.prediccionPorArticuloAndFechas(parametrosPrediccionDTO.getArticuloId(), anio, mes);
                     if (prediccionMesAnterior != null && prediccionMesAnterior.getValorPrediccion() != null) {
                         demandaHistoricaMes = prediccionMesAnterior.getValorPrediccion();
                     } else {
                         demandaHistoricaMes = 0;
                     }
+
+                     */
                 }
 
                 sumaXY += (nroMes * demandaHistoricaMes);
@@ -308,7 +319,7 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
                 prediccion.setValorPrediccion(valorPrediccion);
                 prediccion.setFechaPrediccion(fechaDesde);
                 prediccion.setArticulo(articulo);
-                prediccion.setMetodoPrediccion(parametrosPrediccionDTO.getMetodoPrediccion());
+                prediccion.setMetodoPrediccion(articulo.getMetodoPred());
                 prediccionDemandaRepository.save(prediccion);
                 listaPredicciones.add(prediccion);
             }
@@ -381,14 +392,14 @@ public class PrediccionDemandaServiceImpl extends BaseServiceImpl<PrediccionDema
                     parametrosPrediccionDTO.setError(errorEST);
                     parametrosPrediccionDTO.setPorcentajeDeError(porcentajeDeErrorEST);
                     parametrosPrediccionDTO.setPrediccion(prediccionEST);
-                    articulo.setMetodoPred(MetodoPrediccion.PROMEDIO_MOVIL_SUAVIZADO);
+                    articulo.setMetodoPred(MetodoPrediccion.ESTACIONALIDAD);
                     articuloRepository.save(articulo);
                 }
             } else {
                 parametrosPrediccionDTO.setError(errorPMSE);
                 parametrosPrediccionDTO.setPorcentajeDeError(porcentajeDeErrorPMSE);
                 parametrosPrediccionDTO.setPrediccion(prediccionPMSE);
-                articulo.setMetodoPred(MetodoPrediccion.ESTACIONALIDAD);
+                articulo.setMetodoPred(MetodoPrediccion.PROMEDIO_MOVIL_SUAVIZADO);
                 articuloRepository.save(articulo);
             }
 

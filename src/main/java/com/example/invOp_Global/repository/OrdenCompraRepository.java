@@ -19,10 +19,11 @@ public interface OrdenCompraRepository extends BaseRepository<OrdenCompra,Long> 
     List<OrdenCompra> findOrdenCompraByEstado(@Param("estado") String estado);
 
     @Query(
-            value = "SELECT  oc.id, oc.estado_oc,doc.id_articulo, fecha_oc, id_proveedor, total_oc FROM inventario.ordencompra as oc inner join inventario.ordencompradetalle as doc on doc.id_orden_compra=oc.id where oc.estado_oc=:estado and doc.id=:articuloId ",
+            value = "SELECT oc.* " +
+                    "FROM ordencompra as oc " +
+                    "INNER JOIN ordencompradetalle ocd ON oc.id = ocd.id_orden_compra " +
+                    "WHERE ocd.id_articulo = :articuloId AND oc.estado_oc LIKE %:estado% ",
             nativeQuery = true
     )
     List<OrdenCompra> findOrdenCompraByEstadoAndArticulo(@Param("estado")String estado, @Param("articuloId") Long articuloId);
-
-
 }
